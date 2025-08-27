@@ -102,7 +102,7 @@ export async function signIn(prevState: ActionResponse | null, formData: FormDat
         return {
             success: true,
             message: "Signed in successfully!",
-            redirect: '/workspace'
+            redirect: '/dashboard'
         };
     } catch (error: unknown) {
         console.log('Sign in error:', util.inspect(error, { depth: null }));
@@ -188,7 +188,7 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
         return {
             success: true,
             message: "Email verified successfully!",
-            redirect: '/workspace'
+            redirect: '/dashboard'
         };
     } catch (error: unknown) {
         return {

@@ -9,7 +9,7 @@ export default async function SignInPage() {
 
   const { user } = await withAuth();
   if(user){
-    redirect('/workspace');
+    redirect('/dashboard');
   }
 
   return (

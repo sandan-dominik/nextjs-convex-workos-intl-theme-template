@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function VerifyOtpPage() {
   const { user } = await withAuth();
   if(user){
-    redirect('/workspace');
+    redirect('/dashboard');
   }
 
   return (

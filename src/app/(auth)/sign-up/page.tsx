@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function SignUpPage() {
   const { user } = await withAuth();
   if(user){
-    redirect('/workspace');
+    redirect('/dashboard');
   }
   return (
     <div className="flex flex-col justify-center items-center gap-6 p-6 md:p-10 min-h-svh">

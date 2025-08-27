@@ -35,7 +35,7 @@ export default async function Home() {
             <>
             <p>Welcome, {user.firstName} {user.lastName}</p>
             <Button variant="outline">
-              <Link href="/workspace">Workspace</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </Button>
             </>
           ) : (

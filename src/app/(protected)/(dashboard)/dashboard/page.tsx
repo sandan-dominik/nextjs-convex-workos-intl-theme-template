@@ -1,13 +1,13 @@
 import { withAuth } from "@workos-inc/authkit-nextjs";
 import SignOutButton from "@/components/sign-out-button";
 
-export default async function WorkspacePage() {
+export default async function DashboardPage() {
   const { user } = await withAuth({ensureSignedIn: true});
   
   return (
     <div className="flex flex-col justify-center items-center gap-6 p-6 md:p-10 min-h-svh">
       <div className="flex flex-col gap-6 w-full max-w-sm">
-        <h1 className="font-bold text-2xl">Workspace</h1>
+        <h1 className="font-bold text-2xl">Dashboard</h1>
         {user && (
           <div className="space-y-2">
             <p><strong>Email:</strong> {user.email}</p>

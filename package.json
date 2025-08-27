@@ -1,5 +1,13 @@
 {
-  "name": "sandanai-app",
+  "name": "nextjs-convex-workos-intl-theme-template",
+  "description": "A template for a Next.js, Convex, WorkOS, Intl, Theme app",
+  "author": "Dominik Loessl",
+  "license": "MIT",
+  "homepage": "https://github.com/sandan-dominik/nextjs-convex-workos-intl-theme-template.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandan-dominik/nextjs-convex-workos-intl-theme-template.git"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
