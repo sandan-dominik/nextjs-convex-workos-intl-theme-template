@@ -10,6 +10,7 @@
       "signUp": "Register",
       "included": {
         "shadcn": "Shadcn UI Components integrated",
+        "tailwind-css": "Tailwind CSS integrated",
         "next-intl": "Next Intl integrated + Language Switcher",
         "next-themes": "Next Theme (Dark/light) integrated + Toggle",
         "workos": "WorkOS Auth integrated",

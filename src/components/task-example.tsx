@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import { CheckIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { Id } from "../../convex/_generated/dataModel";
-import { deleteTask } from "../../convex/tasks";
 
 export default function TaskExample() {
   const tasks = useQuery(api.tasks.getAllTasks);

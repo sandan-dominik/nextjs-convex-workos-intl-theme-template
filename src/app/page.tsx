@@ -23,6 +23,7 @@ export default async function Home() {
         />
         <ol className="font-[family-name:var(--font-geist-mono)] text-sm sm:text-left text-center list-decimal list-inside">
           <li className="mb-2">{t("included.shadcn")}</li>
+          <li className="mb-2">{t("included.tailwind-css")}</li>
           <li className="mb-2">{t("included.next-themes")}</li>
           <li className="mb-2">{t("included.next-intl")}</li>
           <li className="mb-2">{t("included.workos")}</li>
