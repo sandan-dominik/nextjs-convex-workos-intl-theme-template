@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/provider/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
+import {NextIntlClientProvider} from 'next-intl';
+import { ThemeToggle } from "@/components/common/theme-toggle";
+import { LanguageSwitcher } from "@/components/common/lang-switcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,10 +37,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <div className="top-4 right-4 fixed">
+          <NextIntlClientProvider>
+          <div className="top-4 right-4 fixed flex">
             <ThemeToggle />
+            <LanguageSwitcher />
           </div>
-          {children}
+          
+            {children}
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>

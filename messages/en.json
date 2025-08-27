@@ -1,0 +1,12 @@
+{
+    "common": {
+      "langSwitcher": {
+        "de": "German",
+        "en": "English"
+      }
+    },
+    "HomePage": {
+      "login": "Login",
+        "register": "Register"
+    }
+  }
