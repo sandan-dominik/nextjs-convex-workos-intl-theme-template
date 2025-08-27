@@ -12,7 +12,8 @@
         "shadcn": "Shadcn UI Components integriert",
         "next-intl": "Next Intl integriert + Sprachauswahl",
         "next-themes": "Next Theme (Dark/light) integriert + Toggle",
-        "workos": "WorkOS Auth integriert"
+        "workos": "WorkOS Auth integriert",
+        "convex": "Convex integriert"
       }
     },
     "SignInPage": {

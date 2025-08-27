@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/provider/theme-provider";
 import { NextIntlClientProvider } from 'next-intl';
-import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components';
+import { ConvexClientProvider } from "@/provider/convex-client-provider";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { LanguageSwitcher } from "@/components/common/lang-switcher";
 
@@ -39,13 +39,13 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <NextIntlClientProvider>
-            <AuthKitProvider>
+              <ConvexClientProvider>
               <div className="top-4 right-4 fixed flex">
                 <LanguageSwitcher variant="flag" />
                 <ThemeToggle />
               </div>
               {children}
-            </AuthKitProvider>
+              </ConvexClientProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
