@@ -39,8 +39,8 @@ export default function RootLayout({
         >
           <NextIntlClientProvider>
           <div className="top-4 right-4 fixed flex">
+            <LanguageSwitcher variant="flag" />
             <ThemeToggle />
-            <LanguageSwitcher />
           </div>
           
             {children}

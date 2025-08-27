@@ -6,7 +6,50 @@
       }
     },
     "HomePage": {
-      "login": "Einloggen",
-        "register": "Registrieren"
+      "signIn": "Einloggen",
+      "signUp": "Registrieren"
+    },
+    "SignInPage": {
+      "title": "Einloggen",
+      "enterCredentials": "Bitte melde dich an, um fortzufahren."
+    },
+    "SignUpPage": {
+      "title": "Registrieren",
+      "enterCredentials": "Bitte registriere dich, um fortzufahren."
+    },
+    "OTPPage": {
+      "title": "Verifizierungscode",
+      "description": "Du wirst automatisch weitergeleitet, wenn der Code bestätigt ist."
+    },
+    "Authentication": {
+      "signIn": "Einloggen",
+      "signUp": "Registrieren",
+      "alreadyHaveAccount": "Bereits ein Konto?",
+      "dontHaveAccount": "Noch kein Konto?",
+      "firstname": {
+        "label": "Vorname",
+        "placeholder": "Vorname eingeben"
+      },
+      "lastname": {
+        "label": "Name",
+        "placeholder": "Name eingeben"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email eingeben"
+      },
+      "password": {
+        "label": "Passwort",
+        "placeholder": "Passwort eingeben"
+      },
+      "forgotPassword": "Passwort vergessen?",
+      "orContinueWith": "oder",
+      "loggingIn": "Einloggen...",
+      "pleaseWait": "Bitte warten...",
+      "error": {
+        "required": "Pflichtfeld",
+        "email": "Ungültige E-Mail-Adresse",
+        "password": "Passwort muss mindestens 8 Zeichen lang sein"
+      }
     }
   }

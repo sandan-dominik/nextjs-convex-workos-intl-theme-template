@@ -6,7 +6,50 @@
       }
     },
     "HomePage": {
-      "login": "Login",
-        "register": "Register"
+      "signIn": "Sign in",
+      "signUp": "Register"
+    },
+    "SignInPage": {
+      "title": "Sign in",
+      "enterCredentials": "Please sign in to continue."
+    },
+    "SignUpPage": {
+      "title": "Sign up",
+      "enterCredentials": "Please sign up to continue."
+    },
+    "OTPPage": {
+      "title": "Enter verification code",
+      "description": "You will be automatically redirected after the code is confirmed."
+    },
+    "Authentication": {
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "alreadyHaveAccount": "Already have an account?",
+      "dontHaveAccount": "Don't have an account?",
+      "firstname": {
+        "label": "First name",
+        "placeholder": "Enter your first name"
+      },
+      "lastname": {
+        "label": "Last name",
+        "placeholder": "Enter your last name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      },
+      "forgotPassword": "Forgot password?",
+      "orContinueWith": "oder",
+      "loggingIn": "Logging in...",
+      "pleaseWait": "Please wait...",
+      "error": {
+        "required": "Required",
+        "email": "Invalid email address",
+        "password": "Password must be at least 8 characters long"
+      }
     }
   }

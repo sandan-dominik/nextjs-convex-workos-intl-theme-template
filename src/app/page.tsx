@@ -32,10 +32,10 @@ export default async function Home() {
 
         <div className="flex sm:flex-row flex-col items-center gap-4">
           <Button variant="outline">
-            <Link href="/login">{t("login")}</Link>
+            <Link href="/sign-in">{t("signIn")}</Link>
           </Button>
           <Button variant="default">
-            <Link href="/register">{t("register")}</Link>
+            <Link href="/sign-up">{t("signUp")}</Link>
           </Button>
         </div>
       </main>
