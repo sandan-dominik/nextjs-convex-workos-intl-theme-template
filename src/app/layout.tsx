@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/provider/theme-provider";
-import {NextIntlClientProvider} from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
+import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components';
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { LanguageSwitcher } from "@/components/common/lang-switcher";
 
@@ -38,12 +39,13 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <NextIntlClientProvider>
-          <div className="top-4 right-4 fixed flex">
-            <LanguageSwitcher variant="flag" />
-            <ThemeToggle />
-          </div>
-          
-            {children}
+            <AuthKitProvider>
+              <div className="top-4 right-4 fixed flex">
+                <LanguageSwitcher variant="flag" />
+                <ThemeToggle />
+              </div>
+              {children}
+            </AuthKitProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -3,38 +3,68 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { signUp } from "@/app/actions/auth";
+import { useActionState, useEffect, startTransition } from "react";
+import { signUpSchema } from "@/schemas/zod/auth";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {  
   const t = useTranslations("SignUpPage");
   const tAuth = useTranslations("Authentication");  
-
-  const registerSchema = z.object({
-    firstname: z.string().min(1, tAuth("error.required")),
-    name: z.string().min(1, tAuth("error.required")),
-    email: z.string().email(tAuth("error.email")),
-    password: z.string().min(8, tAuth("error.password"))
-  });
+  const [state, formAction, isPending] = useActionState(signUp, null);
+  const router = useRouter();
   
-  type RegisterFormData = z.infer<typeof registerSchema>;
+  type SignUpFormData = z.infer<typeof signUpSchema>;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm<RegisterFormData>({
+    formState: { errors, isSubmitting },
+    setError
+  } = useForm<SignUpFormData>({
     mode: "onChange",
-    resolver: zodResolver(registerSchema)
+    resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    console.log("form data -->", data);
+  // Handle server-side validation errors
+  useEffect(() => {
+    if (state?.zodErrors && typeof state.zodErrors === 'object') {
+      // Set server validation errors on the form
+      Object.entries(state.zodErrors).forEach(([field, messages]) => {
+        if (Array.isArray(messages) && messages.length > 0) {
+          setError(field as keyof SignUpFormData, {
+            type: 'server',
+            message: messages[0]
+          });
+        }
+      });
+    }
+    
+    // Handle successful signup
+    if (state?.success && state?.redirect) {
+      router.push(state.redirect);
+    }
+  }, [state, setError, router]);  
+
+  const onSubmit = async (data: SignUpFormData) => {
+    // Create FormData for server action
+    const formData = new FormData();
+    formData.append('firstname', data.firstname);
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    
+    // Call the server action within startTransition
+    startTransition(() => {
+      formAction(formData);
+    });
   };
 
   return (
@@ -43,6 +73,8 @@ export default function SignUpForm() {
         <CardTitle className="text-xl">{t("title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
+        {state && state.success && <p className="bg-green-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
+        {state && !state.success && <p className="bg-red-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
         <div className="gap-4 grid">
           <Button variant="outline" className="w-full">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -73,7 +105,7 @@ export default function SignUpForm() {
                 {...register("firstname")}
                 aria-invalid={errors.firstname ? "true" : "false"}
               />
-              {errors.firstname && <p className="mt-1 text-red-500 text-sm">{errors.firstname.message}</p>}
+              {errors.firstname && <p className="mt-1 text-red-500 text-sm">{tAuth("error.required")}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="name">{tAuth("lastname.label")}</Label>
@@ -84,7 +116,7 @@ export default function SignUpForm() {
                 {...register("name")}
                 aria-invalid={errors.name ? "true" : "false"}
               />
-              {errors.name && <p className="mt-1 text-red-500 text-sm">{errors.name.message}</p>}
+              {errors.name && <p className="mt-1 text-red-500 text-sm">{tAuth("error.required")}</p>}
             </div>
           </div>
           <div className="space-y-2">
@@ -96,7 +128,7 @@ export default function SignUpForm() {
               {...register("email")}
               aria-invalid={errors.email ? "true" : "false"}
             />
-            {errors.email && <p className="mt-1 text-red-500 text-sm">{errors.email.message}</p>}
+            {errors.email && <p className="mt-1 text-red-500 text-sm">{tAuth("error.email")}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">{tAuth("password.label")}</Label>
@@ -108,11 +140,11 @@ export default function SignUpForm() {
               aria-invalid={errors.password ? "true" : "false"}
             />
             {errors.password && (
-              <p className="mt-1 text-red-500 text-sm">{errors.password.message}</p>
+              <p className="mt-1 text-red-500 text-sm">{tAuth("error.password")}</p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Please wait..." : tAuth("signUp")}
+          <Button type="submit" className="w-full" disabled={(isPending || isSubmitting)}>
+            {(isPending || isSubmitting) ? <Loader2 className="animate-spin" /> : tAuth("signUp")}
           </Button>
           <div className="text-sm text-center">
             {tAuth("alreadyHaveAccount")} {" "}

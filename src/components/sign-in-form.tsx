@@ -3,37 +3,71 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GithubIcon, LogInIcon } from "lucide-react";
+import { LogInIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
+import { signIn } from "@/app/actions/auth";
+import { useActionState, useEffect, startTransition } from "react";
+import { Loader2 } from "lucide-react";
+import { signInSchema } from "@/schemas/zod/auth";
 
 export default function SignInForm() {
   const t = useTranslations("SignInPage");
   const tAuth = useTranslations("Authentication");
-
-  const loginSchema = z.object({
-    email: z.string().email(tAuth("error.email")),
-    password: z.string().min(8, tAuth("error.password"))
-  });
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState(signIn, null);
   
-  type LoginFormData = z.infer<typeof loginSchema>;
+  type LoginFormData = z.infer<typeof signInSchema>;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    setError
   } = useForm<LoginFormData>({
     mode: "onChange",
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(signInSchema)
   });
 
+  // Handle server-side validation errors
+  useEffect(() => {
+    if (state?.zodErrors && typeof state.zodErrors === 'object') {
+      // Set server validation errors on the form
+      Object.entries(state.zodErrors).forEach(([field, messages]) => {
+        if (Array.isArray(messages) && messages.length > 0) {
+          setError(field as keyof LoginFormData, {
+            type: 'server',
+            message: messages[0]
+          });
+        }
+      });
+    }
+    
+    // Handle successful signin
+    if (state?.redirect && typeof state.redirect === 'string') {
+      console.log('Redirecting to:', state.redirect);
+      setTimeout(() => {
+        router.push(state.redirect as string);
+      }, 3000);
+    }
+  }, [state, setError, router]);
+
   const onSubmit = async (data: LoginFormData) => {
-    console.log("form data -->", data);
+    // Create FormData for server action
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    
+    // Call the server action within startTransition
+    startTransition(() => {
+      formAction(formData);
+    });
   };
 
   return (
@@ -43,6 +77,8 @@ export default function SignInForm() {
         <CardDescription>{t("enterCredentials")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
+        {state && state.success && <p className="bg-green-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
+        {state && !state.success && <p className="bg-red-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
         <div className="gap-4 grid">
           <Button variant="outline" className="w-full">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -92,11 +128,18 @@ export default function SignInForm() {
               <p className="mt-1 text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Logging in..." : tAuth("signIn")}
-            <LogInIcon
-              className="w-4 h-4"
-            />
+          <Button type="submit" className="w-full" disabled={(isPending || isSubmitting)}>
+            {(isPending || isSubmitting) ? (
+              <>
+                <Loader2 className="mr-2 animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              <>
+                {tAuth("signIn")}
+                <LogInIcon className="ml-2 w-4 h-4" />
+              </>
+            )}
           </Button>
           <div className="text-sm text-center">
             {tAuth("dontHaveAccount")} {" "}

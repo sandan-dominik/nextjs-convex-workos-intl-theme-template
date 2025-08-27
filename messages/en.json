@@ -7,7 +7,13 @@
     },
     "HomePage": {
       "signIn": "Sign in",
-      "signUp": "Register"
+      "signUp": "Register",
+      "included": {
+        "shadcn": "Shadcn UI Components integrated",
+        "next-intl": "Next Intl integrated + Language Switcher",
+        "next-themes": "Next Theme (Dark/light) integrated + Toggle",
+        "workos": "WorkOS Auth integrated"
+      }
     },
     "SignInPage": {
       "title": "Sign in",
