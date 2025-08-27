@@ -14,12 +14,6 @@ type ActionResponse = {
 };
 
 export async function signUp(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
-    // Move the environment check inside the server action
-    console.log('Environment variables in signUp:', {
-        WORKOS_API_KEY: process.env.WORKOS_API_KEY ? 'SET' : 'NOT SET',
-        WORKOS_CLIENT_ID: process.env.WORKOS_CLIENT_ID ? 'SET' : 'NOT SET'
-    });
-
     const workos = getWorkOS();
     const rawData = {
         firstname: formData.get('firstname'),
@@ -138,18 +132,14 @@ export async function signIn(prevState: ActionResponse | null, formData: FormDat
 
 export async function signout(): Promise<ActionResponse> {
     try {
-        // Verify user is authenticated
         await withAuth();
-        // Sign out the user
         await signOut();
-        // Return redirect information instead of using redirect directly
         return {
             success: true,
             redirect: "/"
         };
     } catch (error: unknown) {
         console.log('Sign out error:', error);
-        // If there's any error (user not authenticated, etc.), return redirect info
         return {
             success: true,
             redirect: "/sign-in"
@@ -166,7 +156,6 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
     };
 
     try {
-        // Authenticate with the WorkOS API directly
         const authResponse = await workos.userManagement.authenticateWithEmailVerification({
             clientId: process.env.WORKOS_CLIENT_ID || '',
             code: String(rawData.code),
@@ -182,8 +171,6 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
             },
             '/auth/callback',
         );
-
-        console.log(authResponse);
 
         return {
             success: true,
