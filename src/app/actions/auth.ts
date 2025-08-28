@@ -130,15 +130,15 @@ export async function signIn(prevState: ActionResponse | null, formData: FormDat
     }
 }
 
-export async function signout(): Promise<ActionResponse> {
+export async function signout(): Promise<ActionResponse | undefined> {
     try {
         await withAuth();
         await signOut();
-        return {
-            success: true,
-            redirect: "/"
-        };
     } catch (error: unknown) {
+        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+            throw error;
+        }
+        
         console.log('Sign out error:', error);
         return {
             success: true,
@@ -169,7 +169,7 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
                 user: authResponse.user,
                 impersonator: authResponse.impersonator,
             },
-            '/auth/callback',
+            '/api/auth/callback',
         );
 
         return {
@@ -185,3 +185,58 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
         };
     }
 }
+
+
+export async function generateOAuthUrl(provider: 'GoogleOAuth' | 'GitHubOAuth' | 'MicrosoftOAuth' | 'AppleOAuth' | 'SlackOAuth'): Promise<{ success: boolean; url?: string; error?: string }> {
+    try {
+        const workos = getWorkOS();
+        
+        // Validate that we have the required environment variables
+        const clientId = process.env.WORKOS_CLIENT_ID;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        
+        if (!clientId) {
+            throw new Error('WORKOS_CLIENT_ID is not configured');
+        }
+        
+        if (!appUrl) {
+            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
+        }
+
+        const oauthUrl = workos.userManagement.getAuthorizationUrl({
+            clientId,
+            provider,
+            redirectUri: `${appUrl}/api/auth/callback`,
+        });
+
+        return { success: true, url: oauthUrl };
+    } catch (error) {
+        console.error(`Error generating ${provider} OAuth URL:`, error);
+        return { 
+            success: false, 
+            error: error instanceof Error ? error.message : `Failed to generate ${provider} OAuth URL` 
+        };
+    }
+}
+
+// Convenience functions for specific providers
+export async function generateGoogleOAuthUrl() {
+    return generateOAuthUrl('GoogleOAuth');
+}
+
+export async function generateGitHubOAuthUrl() {
+    return generateOAuthUrl('GitHubOAuth');
+}
+
+export async function generateMicrosoftOAuthUrl() {
+    return generateOAuthUrl('MicrosoftOAuth');
+}
+
+export async function generateAppleOAuthUrl() {
+    return generateOAuthUrl('AppleOAuth');
+}
+
+export async function generateSlackOAuthUrl() {
+    return generateOAuthUrl('SlackOAuth');
+}
+
