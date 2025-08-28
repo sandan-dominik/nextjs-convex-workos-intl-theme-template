@@ -30,7 +30,7 @@
     "@workos-inc/node": "^7.69.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "convex": "^1.26.1",
+    "convex": "^1.26.2",
     "country-flag-icons": "^1.5.19",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.542.0",

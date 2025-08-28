@@ -1,8 +1,9 @@
 import { withAuth } from "@workos-inc/authkit-nextjs";
 import SignOutButton from "@/components/sign-out-button";
 
+
 export default async function DashboardPage() {
-  const { user } = await withAuth({ensureSignedIn: true});
+  const { user, sessionId, organizationId } = await withAuth({ensureSignedIn: true});
   
   return (
     <div className="flex flex-col justify-center items-center gap-6 p-6 md:p-10 min-h-svh">
@@ -16,6 +17,8 @@ export default async function DashboardPage() {
             <p><strong>Created:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
             <p><strong>Updated:</strong> {new Date(user.updatedAt).toLocaleDateString()}</p>
             <p><strong>Status:</strong> {user.emailVerified ? "✅ Verified" : "❌ Not Verified"}</p>
+            <p><strong>Session ID:</strong> {sessionId}</p>
+            <p><strong>Organization ID:</strong> {organizationId}</p>
           </div>
         )}
         <SignOutButton />
