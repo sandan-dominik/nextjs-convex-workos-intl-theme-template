@@ -11,17 +11,20 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { signUp } from "@/app/actions/auth";
 import { useActionState, useEffect, startTransition } from "react";
-import { signUpSchema } from "@/schemas/zod/auth";
+import { createSignUpSchema } from "@/schemas/zod/auth";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import OAuthButton from "@/components/oauth-button";
 
 export default function SignUpForm() {  
   const t = useTranslations("SignUpPage");
-  const tAuth = useTranslations("Authentication");  
+  const tAuth = useTranslations("Authentication");
+  const tValidation = useTranslations("validation");
   const [state, formAction, isPending] = useActionState(signUp, null);
   const router = useRouter();
   
+  // Create schema with translated error messages
+  const signUpSchema = createSignUpSchema(tValidation);
   type SignUpFormData = z.infer<typeof signUpSchema>;
 
   const {

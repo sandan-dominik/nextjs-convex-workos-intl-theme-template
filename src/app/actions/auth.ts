@@ -1,19 +1,22 @@
 "use server";
 
-import { getWorkOS, saveSession, signOut, withAuth } from '@workos-inc/authkit-nextjs';
-import { signUpSchema, signInSchema } from '@/schemas/zod/auth';
+import { getWorkOS, saveSession, signOut, withAuth, switchToOrganization } from '@workos-inc/authkit-nextjs';
+import { signUpSchema, signInSchema, organizationSchema, createSignInSchema, createSignUpSchema, createOrganizationSchema } from '@/schemas/zod/auth';
 import util from 'util';
+import { getTranslations } from 'next-intl/server';
 
 type ActionResponse = {
-  success: boolean;
-  message?: string;
-  redirect?: string;
-  zodErrors?: Record<string, string[]>;
-  inputs?: Record<string, unknown>;
-  error?: unknown;
+    success: boolean;
+    message?: string;
+    redirect?: string;
+    zodErrors?: Record<string, string[]>;
+    inputs?: Record<string, unknown>;
+    error?: unknown;
 };
 
 export async function signUp(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    const tValidation = await getTranslations("validation");
     const workos = getWorkOS();
     const rawData = {
         firstname: formData.get('firstname'),
@@ -22,12 +25,12 @@ export async function signUp(prevState: ActionResponse | null, formData: FormDat
         password: formData.get('password'),
     };
 
-    const validatedData = signUpSchema.safeParse(rawData);
+    const validatedData = createSignUpSchema(tValidation).safeParse(rawData);
 
     if (!validatedData.success) {
         return {
             success: false,
-            message: "Please fix the errors below",
+            message: t("fixErrorsBelow"),
             zodErrors: validatedData.error?.flatten().fieldErrors,
             inputs: rawData
         };
@@ -45,32 +48,34 @@ export async function signUp(prevState: ActionResponse | null, formData: FormDat
         console.log(user);
         return {
             success: true,
-            message: "User created successfully! Please check your email for verification.",
+            message: t("userCreatedSuccessfully"),
             redirect: '/sign-in'
         };
     } catch (error: unknown) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Something went wrong. Please try again.",
+            message: error instanceof Error ? error.message : t("somethingWentWrong"),
             error: null
         };
     }
 }
 
 export async function signIn(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    const tValidation = await getTranslations("validation");
     const workos = getWorkOS();
     const rawData = {
         email: formData.get('email'),
         password: formData.get('password'),
     };
 
-    const validatedData = signInSchema.safeParse(rawData);
+    const validatedData = createSignInSchema(tValidation).safeParse(rawData);
 
     if (!validatedData.success) {
 
         return {
             success: false,
-            message: "Please fix the errors below",
+            message: t("fixErrorsBelow"),
             zodErrors: validatedData.error?.flatten().fieldErrors,
             inputs: rawData
         };
@@ -95,37 +100,37 @@ export async function signIn(prevState: ActionResponse | null, formData: FormDat
 
         return {
             success: true,
-            message: "Signed in successfully!",
-            redirect: '/dashboard'
+            message: t("signedInSuccessfully"),
+            redirect: '/onboarding'
         };
     } catch (error: unknown) {
         console.log('Sign in error:', util.inspect(error, { depth: null }));
 
-        if(error instanceof Error && 'rawData' in error){
-            switch((error.rawData as { code: string }).code) {
+        if (error instanceof Error && 'rawData' in error) {
+            switch ((error.rawData as { code: string }).code) {
                 case 'invalid_credentials':
                     return {
                         success: false,
-                        message: "Invalid email or password",
+                        message: t("invalidEmailOrPassword"),
                     }
                 case 'email_verification_required':
                     return {
-                        success: false,
-                        message: "Email verification required",
+                        success: true,
+                        message: t("emailVerificationRequired"),
                         redirect: '/verify?token=' + (error.rawData as { pending_authentication_token: string }).pending_authentication_token
                     }
                 default:
                     return {
                         success: false,
-                        message: "Invalid email or password",
+                        message: t("invalidEmailOrPassword"),
                     }
             }
         }
 
-        return { 
+        return {
             success: false,
-            message: "Invalid email or password",
-            error: JSON.parse(JSON.stringify(error)) 
+            message: t("invalidEmailOrPassword"),
+            error: JSON.parse(JSON.stringify(error))
         };
     }
 }
@@ -138,7 +143,7 @@ export async function signout(): Promise<ActionResponse | undefined> {
         if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
             throw error;
         }
-        
+
         console.log('Sign out error:', error);
         return {
             success: true,
@@ -148,8 +153,9 @@ export async function signout(): Promise<ActionResponse | undefined> {
 }
 
 export async function verifyEmail(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
     const workos = getWorkOS();
-    
+
     const rawData = {
         code: formData.get('code'),
         token: formData.get('token'),
@@ -174,31 +180,102 @@ export async function verifyEmail(prevState: ActionResponse | null, formData: Fo
 
         return {
             success: true,
-            message: "Email verified successfully!",
-            redirect: '/dashboard'
+            message: t("emailVerifiedSuccessfully"),
+            redirect: '/onboarding'
         };
     } catch (error: unknown) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Invalid verification code. Please try again.",
+            message: error instanceof Error ? error.message : t("invalidVerificationCode"),
             error: null
         };
     }
 }
 
-
-export async function generateOAuthUrl(provider: 'GoogleOAuth' | 'GitHubOAuth' | 'MicrosoftOAuth' | 'AppleOAuth' | 'SlackOAuth'): Promise<{ success: boolean; url?: string; error?: string }> {
+export async function createOrganization(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    const tValidation = await getTranslations("validation");
+    const workos = getWorkOS();
+    
     try {
-        const workos = getWorkOS();
+        const { user } = await withAuth({ ensureSignedIn: true });
         
-        // Validate that we have the required environment variables
+        const rawData = {
+            name: formData.get('name')
+        };
+
+        const validatedData = createOrganizationSchema(tValidation).safeParse(rawData);
+
+        if (!validatedData.success) {
+            return {
+                success: false,
+                message: t("fixErrorsBelow"),
+                zodErrors: validatedData.error?.flatten().fieldErrors,
+                inputs: rawData
+            };
+        }
+        
+        // 1. Create the organization
+        const organization = await workos.organizations.createOrganization({
+            name: validatedData.data.name,
+        });
+
+        // 2. Add the user to the organization as an admin
+        await workos.userManagement.createOrganizationMembership({
+            organizationId: organization.id,
+            userId: user.id,
+            roleSlug: 'admin',
+        });
+
+        // 3. Generate the magic link to select the organization
         const clientId = process.env.WORKOS_CLIENT_ID;
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-        
         if (!clientId) {
             throw new Error('WORKOS_CLIENT_ID is not configured');
         }
+
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        if (!appUrl) {
+            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
+        }
+
+        await switchToOrganization(organization.id);
         
+        // If we reach here, the switch was successful
+        return {
+            success: true,
+            message: t("organizationCreatedSuccessfully"),
+            redirect: '/dashboard'
+        };
+    } catch (error: unknown) {
+        console.log('Create organization error:', error);
+        
+        // Handle NEXT_REDIRECT error (this is expected behavior)
+        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+            // This is a successful redirect, not an error
+            throw error; // Re-throw to let Next.js handle the redirect
+        }
+        
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("somethingWentWrong"),
+            error: null
+        };
+    }
+}
+
+export async function generateOAuthUrl(provider: 'GoogleOAuth' | 'GitHubOAuth' | 'MicrosoftOAuth' | 'AppleOAuth' | 'SlackOAuth'): Promise<{ success: boolean; url?: string; error?: string }> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+
+        // Validate that we have the required environment variables
+        const clientId = process.env.WORKOS_CLIENT_ID;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+        if (!clientId) {
+            throw new Error('WORKOS_CLIENT_ID is not configured');
+        }
+
         if (!appUrl) {
             throw new Error('NEXT_PUBLIC_APP_URL is not configured');
         }
@@ -212,9 +289,9 @@ export async function generateOAuthUrl(provider: 'GoogleOAuth' | 'GitHubOAuth' |
         return { success: true, url: oauthUrl };
     } catch (error) {
         console.error(`Error generating ${provider} OAuth URL:`, error);
-        return { 
-            success: false, 
-            error: error instanceof Error ? error.message : `Failed to generate ${provider} OAuth URL` 
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : t("failedToGenerateOAuthUrl", { provider })
         };
     }
 }
@@ -238,5 +315,43 @@ export async function generateAppleOAuthUrl() {
 
 export async function generateSlackOAuthUrl() {
     return generateOAuthUrl('SlackOAuth');
+}
+
+export async function getOrganization(organizationId: string) {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+        
+        if (!organizationId) {
+            return {
+                success: false,
+                message: t("organizationIdRequired"),
+                organization: null
+            };
+        }
+
+        const organization = await workos.organizations.getOrganization(organizationId);
+        
+        return {
+            success: true,
+            organization: {
+                id: organization.id,
+                name: organization.name,
+                object: organization.object,
+                createdAt: organization.createdAt,
+                updatedAt: organization.updatedAt,
+                domains: organization.domains,
+                metadata: organization.metadata
+            }
+        };
+    } catch (error: unknown) {
+        console.error('Error fetching organization:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToFetchOrganization"),
+            organization: null,
+            error: null
+        };
+    }
 }
 

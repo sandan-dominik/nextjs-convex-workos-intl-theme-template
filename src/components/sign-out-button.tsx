@@ -5,8 +5,15 @@ import { signout } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
 import { useActionState, startTransition, useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
-export default function SignOutButton() {
+type SignOutButtonProps = {
+  className?: string;
+}
+
+export default function SignOutButton({ className }: SignOutButtonProps) {
+  const t = useTranslations("DashboardPage");
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(signout, null);
 
@@ -28,15 +35,15 @@ export default function SignOutButton() {
       onClick={handleSignOut} 
       disabled={isPending}
       variant="destructive"
-      className="w-full"
+      className={cn("cursor-pointer", className)}
     >
       {isPending ? (
         <>
           <Loader2 className="mr-2 animate-spin" />
-          Signing out...
+          {t("signingOut")}
         </>
       ) : (
-        "Sign Out"
+        t("signOut")
       )}
     </Button>
   );

@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { withAuth } from '@workos-inc/authkit-nextjs';
 import TaskExample from "@/components/task-example";
+import SignOutButton from "@/components/sign-out-button";
 
 export default async function Home() {
   const t = await getTranslations("HomePage");
@@ -37,6 +38,7 @@ export default async function Home() {
             <Button variant="outline">
               <Link href="/dashboard">Dashboard</Link>
             </Button>
+            <SignOutButton/>   
             </>
           ) : (
             <>

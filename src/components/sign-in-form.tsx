@@ -15,15 +15,18 @@ import { useTranslations } from "next-intl";
 import { signIn } from "@/app/actions/auth";
 import { useActionState, useEffect, startTransition } from "react";
 import { Loader2 } from "lucide-react";
-import { signInSchema } from "@/schemas/zod/auth";
+import { createSignInSchema } from "@/schemas/zod/auth";
 import OAuthButton from "@/components/oauth-button";
 
 export default function SignInForm() {
   const t = useTranslations("SignInPage");
   const tAuth = useTranslations("Authentication");
+  const tValidation = useTranslations("validation");
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(signIn, null);
   
+  // Create schema with translated error messages
+  const signInSchema = createSignInSchema(tValidation);
   type LoginFormData = z.infer<typeof signInSchema>;
 
   const {
@@ -132,7 +135,7 @@ export default function SignInForm() {
               <p className="mt-1 text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={(isPending || isSubmitting)}>
+          <Button type="submit" className="w-full cursor-pointer" disabled={(isPending || isSubmitting)}>
             {(isPending || isSubmitting) ? (
               <>
                 <Loader2 className="mr-2 animate-spin" />

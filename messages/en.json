@@ -5,6 +5,12 @@
         "en": "English"
       }
     },
+    "components": {
+      "TaskExample": {
+        "title": "Tasks",
+        "addTask": "Add task"
+      }
+    },
     "HomePage": {
       "signIn": "Sign in",
       "signUp": "Register",
@@ -59,5 +65,46 @@
         "email": "Invalid email address",
         "password": "Password must be at least 8 characters long"
       }
+    },
+    "OnboardingPage": {
+      "title": "Welcome",
+      "description": "Here we create your organization",
+      "organizationName": {
+        "label": "Organization name",
+        "placeholder": "Enter your organization name"
+      },
+      "createOrganization": "Create organization",
+      "creating": "Creating..."
+    },
+    "DashboardPage": {
+      "title": "Dashboard",
+      "backToDashboard": "Back to dashboard",
+      "startOnboarding": "Start Onboarding (Organization creation)",
+      "signOut": "Sign out",
+      "signingOut": "Signing out..."
+    },
+    "actions": {
+      "auth": {
+        "fixErrorsBelow": "Please fix the errors below",
+        "userCreatedSuccessfully": "User created successfully! Please check your email for verification.",
+        "somethingWentWrong": "Something went wrong. Please try again.",
+        "signedInSuccessfully": "Signed in successfully!",
+        "invalidEmailOrPassword": "Invalid email or password",
+        "emailVerificationRequired": "Email verification required",
+        "emailVerifiedSuccessfully": "Email verified successfully!",
+        "invalidVerificationCode": "Invalid verification code. Please try again.",
+        "organizationCreatedSuccessfully": "Organization created successfully! Redirecting...",
+        "organizationIdRequired": "Organization ID is required",
+        "failedToFetchOrganization": "Failed to fetch organization",
+        "failedToGenerateOAuthUrl": "Failed to generate {provider} OAuth URL"
+      }
+    },
+    "validation": {
+      "required": "Required",
+      "invalidEmail": "Invalid email address",
+      "tooSmall": "Too small: expected string to have >=8 characters",
+      "tooLong": "Too long: expected string to have <=255 characters",
+      "tooLong20": "Too long: expected string to have <=20 characters",
+      "tooLong100": "Too long: expected string to have <=100 characters"
     }
   }

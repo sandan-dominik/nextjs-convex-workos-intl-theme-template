@@ -5,6 +5,12 @@
         "en": "Englisch"
       }
     },
+    "components": {
+      "TaskExample": {
+        "title": "Aufgaben",
+        "addTask": "Aufgabe erstellen"
+      }
+    },
     "HomePage": {
       "signIn": "Einloggen",
       "signUp": "Registrieren",
@@ -59,5 +65,46 @@
         "email": "Ungültige E-Mail-Adresse",
         "password": "Passwort muss mindestens 8 Zeichen lang sein"
       }
+    },
+    "OnboardingPage": {
+      "title": "Willkommen",
+      "description": "Hier erstellen wir deine Organisation",
+      "organizationName": {
+        "label": "Organisationsname",
+        "placeholder": "Geben Sie den Namen Ihrer Organisation ein"
+      },
+      "createOrganization": "Erstelle Organisation",
+      "creating": "Wird erstellt..."
+    },
+    "DashboardPage": {
+      "title": "Dashboard",
+      "backToDashboard": "Zurück zum Dashboard",
+      "startOnboarding": "Starte Onboarding (Organisation erstellen)",
+      "signOut": "Abmelden",
+      "signingOut": "Abmelden..."
+    },
+    "actions": {
+      "auth": {
+        "fixErrorsBelow": "Bitte behebe die Fehler unten",
+        "userCreatedSuccessfully": "Benutzer erfolgreich erstellt! Bitte überprüfe deine E-Mail zur Bestätigung.",
+        "somethingWentWrong": "Etwas ist schief gelaufen. Bitte versuche es erneut.",
+        "signedInSuccessfully": "Erfolgreich angemeldet!",
+        "invalidEmailOrPassword": "Ungültige E-Mail oder Passwort",
+        "emailVerificationRequired": "E-Mail-Verifizierung erforderlich",
+        "emailVerifiedSuccessfully": "E-Mail erfolgreich verifiziert!",
+        "invalidVerificationCode": "Ungültiger Bestätigungscode. Bitte versuche es erneut.",
+        "organizationCreatedSuccessfully": "Organisation erfolgreich erstellt! Weiterleitung...",
+        "organizationIdRequired": "Organisations-ID ist erforderlich",
+        "failedToFetchOrganization": "Fehler beim Abrufen der Organisation",
+        "failedToGenerateOAuthUrl": "Fehler beim Generieren der {provider} OAuth-URL"
+      }
+    },
+    "validation": {
+      "required": "Pflichtfeld",
+      "invalidEmail": "Ungültige E-Mail-Adresse",
+      "tooSmall": "Zu kurz: Mindestens 8 Zeichen erforderlich",
+      "tooLong": "Zu lang: Maximal 255 Zeichen erlaubt",
+      "tooLong20": "Zu lang: Maximal 20 Zeichen erlaubt",
+      "tooLong100": "Zu lang: Maximal 100 Zeichen erlaubt"
     }
   }
