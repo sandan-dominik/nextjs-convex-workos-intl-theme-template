@@ -72,7 +72,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
         router.push(state.redirect || '/sign-in');
       }, timer);
     }
-  }, [state, setError, router]);
+  }, [state, setError, router, timer]);
 
   const onSubmit = async (data: NewPasswordFormData) => {
     const formData = new FormData();

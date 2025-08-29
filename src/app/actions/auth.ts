@@ -119,6 +119,12 @@ export async function signIn(prevState: ActionResponse | null, formData: FormDat
                         message: t("emailVerificationRequired"),
                         redirect: '/verify?token=' + (error.rawData as { pending_authentication_token: string }).pending_authentication_token
                     }
+                case 'organization_selection_required':
+                    return {
+                        success: true,
+                        message: t("organizationSelectionRequired"),
+                        redirect: '/select-organization'
+                    }
                 default:
                     return {
                         success: false,
@@ -238,7 +244,13 @@ export async function createOrganization(prevState: ActionResponse | null, formD
             throw new Error('NEXT_PUBLIC_APP_URL is not configured');
         }
 
-        await switchToOrganization(organization.id);
+        if (!appUrl) {
+            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
+        }
+
+        await switchToOrganization(organization.id, {
+            returnTo: `${appUrl}/api/auth/callback`, 
+        });
         
         // If we reach here, the switch was successful
         return {
@@ -418,6 +430,136 @@ export async function resetPassword(prevState: ActionResponse | null, formData: 
         return {
             success: false,
             message: error instanceof Error ? error.message : t("failedToResetPassword"),
+            error: null
+        };
+    }
+}
+
+export async function getUserOrganizations(): Promise<ActionResponse & { organizations?: Array<{ id: string; name: string; object: string; createdAt: string; updatedAt: string; domains: Array<{ object: string; id: string; domain: string; organizationId: string; state: string; verificationStrategy: string; createdAt: string; updatedAt: string }>; metadata: Record<string, string> }> }> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+        
+        // Get the current user's organizations
+        const organizations = await workos.organizations.listOrganizations();
+        
+        return {
+            success: true,
+            organizations: organizations.data.map(org => ({
+                id: org.id,
+                name: org.name,
+                object: org.object,
+                createdAt: org.createdAt,
+                updatedAt: org.updatedAt,
+                domains: org.domains.map(domain => ({
+                    object: domain.object,
+                    id: domain.id,
+                    domain: domain.domain,
+                    organizationId: domain.organizationId,
+                    state: domain.state,
+                    verificationStrategy: domain.verificationStrategy,
+                    createdAt: domain.createdAt,
+                    updatedAt: domain.updatedAt
+                })),
+                metadata: org.metadata
+            }))
+        };
+    } catch (error: unknown) {
+        console.error('Error fetching user organizations:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToFetchUserOrganizations"),
+            organizations: undefined,
+            error: null
+        };
+    }
+}
+
+export async function completeOAuthWithOrganization(pendingToken: string, organizationId: string): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    try {
+        if (!pendingToken || !organizationId) {
+            return {
+                success: false,
+                message: t("tokenAndOrganizationIdRequired"),
+            };
+        }
+
+        const workos = getWorkOS();
+        
+        // Complete the OAuth authentication with the selected organization
+        const authResponse = await workos.userManagement.authenticateWithOrganizationSelection({
+            clientId: process.env.WORKOS_CLIENT_ID || '',
+            pendingAuthenticationToken: pendingToken,
+            organizationId: organizationId,
+        });
+
+        // Save the session
+        await saveSession(
+            {
+                accessToken: authResponse.accessToken,
+                refreshToken: authResponse.refreshToken,
+                user: authResponse.user,
+                impersonator: authResponse.impersonator,
+            },
+            '/auth/callback',
+        );
+        
+        return {
+            success: true,
+            message: t("oauthCompletedSuccessfully"),
+        };
+    } catch (error: unknown) {
+        console.error('Error completing OAuth with organization:', error);
+        
+        // Handle NEXT_REDIRECT specially as it's not an actual error
+        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+            throw error;
+        }
+        
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToCompleteOAuth"),
+            error: null
+        };
+    }
+}
+
+export async function switchToSelectedOrganization(organizationId: string): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        if (!appUrl) {
+            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
+        }
+
+        if (!organizationId) {
+            return {
+                success: false,
+                message: t("organizationIdRequired"),
+            };
+        }
+
+        // Use the existing switchToOrganization function from WorkOS
+        await switchToOrganization(organizationId, {
+            returnTo: `${appUrl}/api/auth/callback`, 
+        });
+        
+        return {
+            success: true,
+            message: t("organizationSwitchedSuccessfully"),
+        };
+    } catch (error: unknown) {
+        console.error('Error switching organization:', error);
+        
+        // Handle NEXT_REDIRECT specially as it's not an actual error
+        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+            throw error;
+        }
+        
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToSwitchOrganization"),
             error: null
         };
     }

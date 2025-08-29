@@ -25,11 +25,18 @@
   },
   "SignInPage": {
     "title": "Einloggen",
-    "enterCredentials": "Bitte melde dich an, um fortzufahren."
+    "enterCredentials": "Bitte melde dich an, um fortzufahren.",
+    "oauthAuthenticationFailed": "OAuth-Authentifizierung fehlgeschlagen. Bitte versuche es erneut.",
+    "userNotFound": "Benutzer nicht gefunden. Bitte registriere dich stattdessen.",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "termsAndPrivacy": "Durch Klicken auf Fortfahren stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu."
   },
   "SignUpPage": {
     "title": "Registrieren",
-    "enterCredentials": "Bitte registriere dich, um fortzufahren."
+    "enterCredentials": "Bitte registriere dich, um fortzufahren.",
+    "userNotFound": "Benutzer nicht gefunden. Bitte versuche dich stattdessen anzumelden.",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "termsAndPrivacy": "Durch Klicken auf Fortfahren stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu."
   },
   "OTPPage": {
     "title": "Verifizierungscode",
@@ -102,7 +109,14 @@
       "failedToSendPasswordReset": "Fehler beim Senden der Passwort-Reset-E-Mail",
       "tokenAndPasswordRequired": "Token und neues Passwort sind erforderlich",
       "passwordResetSuccessfully": "Passwort erfolgreich zurückgesetzt! Weiterleitung zur Anmeldung...",
-      "failedToResetPassword": "Fehler beim Zurücksetzen des Passworts"
+      "failedToResetPassword": "Fehler beim Zurücksetzen des Passworts",
+      "organizationSelectionRequired": "Bitte wähle eine Organisation aus, um fortzufahren",
+      "failedToFetchUserOrganizations": "Fehler beim Abrufen deiner Organisationen",
+      "organizationSwitchedSuccessfully": "Organisation erfolgreich gewechselt",
+      "failedToSwitchOrganization": "Fehler beim Wechseln der Organisation",
+      "tokenAndOrganizationIdRequired": "Token und Organisations-ID sind erforderlich",
+      "oauthCompletedSuccessfully": "OAuth-Authentifizierung erfolgreich abgeschlossen",
+      "failedToCompleteOAuth": "Fehler beim Abschließen der OAuth-Authentifizierung"
     }
   },
   "validation": {
@@ -132,5 +146,19 @@
     "resetting": "Wird zurückgesetzt...",
     "passwordResetSuccess": "Passwort erfolgreich zurückgesetzt!",
     "redirectingToSignIn": "Weiterleitung zur Anmeldung..."
+  },
+  "SelectOrganizationPage": {
+    "title": "Organisation auswählen",
+    "description": "Bitte wähle eine Organisation aus, um fortzufahren.",
+    "loadingOrganizations": "Organisationen werden geladen",
+    "pleaseWait": "Bitte warten, während wir deine Organisationen laden...",
+    "error": "Fehler",
+    "tryAgain": "Erneut versuchen",
+    "failedToLoadOrganizations": "Fehler beim Laden der Organisationen",
+    "pleaseSelectOrganization": "Bitte wähle eine Organisation aus",
+    "failedToSwitchOrganization": "Fehler beim Wechseln der Organisation",
+    "switching": "Wird gestartet...",
+    "continueToOrganization": "Anmelden",
+    "signOut": "Abmelden"
   }
 }

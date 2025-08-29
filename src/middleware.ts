@@ -14,7 +14,7 @@ const options = {
 
 export default async function middleware(request: NextRequest) {
   const protectedRoutes = ['/dashboard', '/onboarding'];
-  const signInRoutes = ['/sign-in', '/sign-up', "/verify-email", "/reset-password", "/new-password"];
+  const signInRoutes = ['/sign-in', '/sign-up', "/verify-email", "/reset-password", "/new-password", "/select-organization"];
   
   // Perform logic before or after AuthKit
 

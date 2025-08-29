@@ -25,11 +25,18 @@
   },
   "SignInPage": {
     "title": "Sign in",
-    "enterCredentials": "Please sign in to continue."
+    "enterCredentials": "Please sign in to continue.",
+    "oauthAuthenticationFailed": "OAuth authentication failed. Please try again.",
+    "userNotFound": "User not found. Please sign up instead.",
+    "unknownError": "An unknown error occurred. Please try again.",
+    "termsAndPrivacy": "By clicking continue, you agree to our Terms of Service and Privacy Policy."
   },
   "SignUpPage": {
     "title": "Sign up",
-    "enterCredentials": "Please sign up to continue."
+    "enterCredentials": "Please sign up to continue.",
+    "userNotFound": "User not found. Please try signing in instead.",
+    "unknownError": "An unknown error occurred. Please try again.",
+    "termsAndPrivacy": "By clicking continue, you agree to our Terms of Service and Privacy Policy."
   },
   "OTPPage": {
     "title": "Enter verification code",
@@ -102,7 +109,14 @@
       "failedToSendPasswordReset": "Failed to send password reset email",
       "tokenAndPasswordRequired": "Token and new password are required",
       "passwordResetSuccessfully": "Password reset successfully! Redirecting to sign in...",
-      "failedToResetPassword": "Failed to reset password"
+      "failedToResetPassword": "Failed to reset password",
+      "organizationSelectionRequired": "Please select an organization to continue",
+      "failedToFetchUserOrganizations": "Failed to fetch your organizations",
+      "organizationSwitchedSuccessfully": "Organization switched successfully",
+      "failedToSwitchOrganization": "Failed to switch organization",
+      "tokenAndOrganizationIdRequired": "Token and organization ID are required",
+      "oauthCompletedSuccessfully": "OAuth authentication completed successfully",
+      "failedToCompleteOAuth": "Failed to complete OAuth authentication"
     }
   },
   "validation": {
@@ -132,5 +146,19 @@
     "resetting": "Resetting...",
     "passwordResetSuccess": "Password Reset Successful!",
     "redirectingToSignIn": "Redirecting to sign in..."
+  },
+  "SelectOrganizationPage": {
+    "title": "Select Organization",
+    "description": "You belong to multiple organizations. Please select one to continue.",
+    "loadingOrganizations": "Loading Organizations",
+    "pleaseWait": "Please wait while we load your organizations...",
+    "error": "Error",
+    "tryAgain": "Try Again",
+    "failedToLoadOrganizations": "Failed to load organizations",
+    "pleaseSelectOrganization": "Please select an organization",
+    "failedToSwitchOrganization": "Failed to switch organization",
+    "switching": "Switching...",
+    "continueToOrganization": "Sign In",
+    "signOut": "Sign Out"
   }
 }
