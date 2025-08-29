@@ -1,11 +1,10 @@
-import { withAuth, getWorkOS } from "@workos-inc/authkit-nextjs";
+import { withAuth } from "@workos-inc/authkit-nextjs";
 import SignOutButton from "@/components/sign-out-button";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getOrganization } from "@/app/actions/auth";
 
 export default async function DashboardPage() {
-  const workos = getWorkOS();
   const { user, sessionId, organizationId } = await withAuth({ensureSignedIn: true});
   const t = await getTranslations("DashboardPage");
   

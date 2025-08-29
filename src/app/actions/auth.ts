@@ -1,7 +1,7 @@
 "use server";
 
 import { getWorkOS, saveSession, signOut, withAuth, switchToOrganization } from '@workos-inc/authkit-nextjs';
-import { signUpSchema, signInSchema, organizationSchema, createSignInSchema, createSignUpSchema, createOrganizationSchema } from '@/schemas/zod/auth';
+import { createSignInSchema, createSignUpSchema, createOrganizationSchema } from '@/schemas/zod/auth';
 import util from 'util';
 import { getTranslations } from 'next-intl/server';
 
