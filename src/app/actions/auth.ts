@@ -355,3 +355,71 @@ export async function getOrganization(organizationId: string) {
     }
 }
 
+export async function sendPasswordReset(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+        
+        const email = formData.get('email') as string;
+        
+        if (!email) {
+            return {
+                success: false,
+                message: t("emailRequired"),
+            };
+        }
+
+        await workos.userManagement.sendPasswordResetEmail({
+            email: email,
+            passwordResetUrl: `${process.env.NEXT_PUBLIC_APP_URL}/new-password`,
+        });
+
+        return {
+            success: true,
+            message: t("passwordResetEmailSent"),
+        };
+    } catch (error: unknown) {
+        console.error('Error sending password reset:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToSendPasswordReset"),
+            error: null
+        };
+    }
+}
+
+export async function resetPassword(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+        
+        const token = formData.get('token') as string;
+        const password = formData.get('password') as string;
+        
+        if (!token || !password) {
+            return {
+                success: false,
+                message: t("tokenAndPasswordRequired"),
+            };
+        }
+
+        await workos.userManagement.resetPassword({
+            token: token,
+            newPassword: password,
+        });
+
+        return {
+            success: true,
+            message: t("passwordResetSuccessfully"),
+            redirect: '/sign-in'
+        };
+    } catch (error: unknown) {
+        console.error('Error resetting password:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToResetPassword"),
+            error: null
+        };
+    }
+}
+

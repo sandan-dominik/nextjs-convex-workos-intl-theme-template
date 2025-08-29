@@ -1,110 +1,136 @@
 {
-    "common": {
-      "langSwitcher": {
-        "de": "Deutsch",
-        "en": "Englisch"
-      }
-    },
-    "components": {
-      "TaskExample": {
-        "title": "Aufgaben",
-        "addTask": "Aufgabe erstellen"
-      }
-    },
-    "HomePage": {
-      "signIn": "Einloggen",
-      "signUp": "Registrieren",
-      "included": {
-        "shadcn": "Shadcn UI Components integriert",
-        "tailwind-css": "Tailwind CSS integriert",
-        "next-intl": "Next Intl integriert + Sprachauswahl",
-        "next-themes": "Next Theme (Dark/light) integriert + Toggle",
-        "workos": "WorkOS Auth integriert",
-        "convex": "Convex integriert"
-      }
-    },
-    "SignInPage": {
-      "title": "Einloggen",
-      "enterCredentials": "Bitte melde dich an, um fortzufahren."
-    },
-    "SignUpPage": {
-      "title": "Registrieren",
-      "enterCredentials": "Bitte registriere dich, um fortzufahren."
-    },
-    "OTPPage": {
-      "title": "Verifizierungscode",
-      "description": "Du wirst automatisch weitergeleitet, wenn der Code bestätigt ist."
-    },
-    "Authentication": {
-      "signIn": "Einloggen",
-      "signUp": "Registrieren",
-      "alreadyHaveAccount": "Bereits ein Konto?",
-      "dontHaveAccount": "Noch kein Konto?",
-      "firstname": {
-        "label": "Vorname",
-        "placeholder": "Vorname eingeben"
-      },
-      "lastname": {
-        "label": "Name",
-        "placeholder": "Name eingeben"
-      },
-      "email": {
-        "label": "Email",
-        "placeholder": "Email eingeben"
-      },
-      "password": {
-        "label": "Passwort",
-        "placeholder": "Passwort eingeben"
-      },
-      "forgotPassword": "Passwort vergessen?",
-      "orContinueWith": "oder",
-      "loggingIn": "Einloggen...",
-      "pleaseWait": "Bitte warten...",
-      "error": {
-        "required": "Pflichtfeld",
-        "email": "Ungültige E-Mail-Adresse",
-        "password": "Passwort muss mindestens 8 Zeichen lang sein"
-      }
-    },
-    "OnboardingPage": {
-      "title": "Willkommen",
-      "description": "Hier erstellen wir deine Organisation",
-      "organizationName": {
-        "label": "Organisationsname",
-        "placeholder": "Geben Sie den Namen Ihrer Organisation ein"
-      },
-      "createOrganization": "Erstelle Organisation",
-      "creating": "Wird erstellt..."
-    },
-    "DashboardPage": {
-      "title": "Dashboard",
-      "backToDashboard": "Zurück zum Dashboard",
-      "startOnboarding": "Starte Onboarding (Organisation erstellen)",
-      "signOut": "Abmelden",
-      "signingOut": "Abmelden..."
-    },
-    "actions": {
-      "auth": {
-        "fixErrorsBelow": "Bitte behebe die Fehler unten",
-        "userCreatedSuccessfully": "Benutzer erfolgreich erstellt! Bitte überprüfe deine E-Mail zur Bestätigung.",
-        "somethingWentWrong": "Etwas ist schief gelaufen. Bitte versuche es erneut.",
-        "signedInSuccessfully": "Erfolgreich angemeldet!",
-        "invalidEmailOrPassword": "Ungültige E-Mail oder Passwort",
-        "emailVerificationRequired": "E-Mail-Verifizierung erforderlich",
-        "emailVerifiedSuccessfully": "E-Mail erfolgreich verifiziert!",
-        "invalidVerificationCode": "Ungültiger Bestätigungscode. Bitte versuche es erneut.",
-        "organizationCreatedSuccessfully": "Organisation erfolgreich erstellt! Weiterleitung...",
-        "organizationIdRequired": "Organisations-ID ist erforderlich",
-        "failedToFetchOrganization": "Fehler beim Abrufen der Organisation",
-        "failedToGenerateOAuthUrl": "Fehler beim Generieren der {provider} OAuth-URL"
-      }
-    },
-    "validation": {
-      "required": "Pflichtfeld",
-      "invalidEmail": "Ungültige E-Mail-Adresse",
-      "tooSmall": "Zu kurz: Mindestens 8 Zeichen erforderlich",
-      "tooLong": "Zu lang: Maximal 255 Zeichen erlaubt",
-      "tooLong20": "Zu lang: Maximal 20 Zeichen erlaubt",
-      "tooLong100": "Zu lang: Maximal 100 Zeichen erlaubt"
+  "common": {
+    "langSwitcher": {
+      "de": "Deutsch",
+      "en": "Englisch"
     }
+  },
+  "components": {
+    "TaskExample": {
+      "title": "Aufgaben",
+      "addTask": "Aufgabe erstellen"
+    }
+  },
+  "HomePage": {
+    "signIn": "Einloggen",
+    "signUp": "Registrieren",
+    "included": {
+      "shadcn": "Shadcn UI Components integriert",
+      "tailwind-css": "Tailwind CSS integriert",
+      "next-intl": "Next Intl integriert + Sprachauswahl",
+      "next-themes": "Next Theme (Dark/light) integriert + Toggle",
+      "workos": "WorkOS Auth integriert",
+      "convex": "Convex integriert"
+    }
+  },
+  "SignInPage": {
+    "title": "Einloggen",
+    "enterCredentials": "Bitte melde dich an, um fortzufahren."
+  },
+  "SignUpPage": {
+    "title": "Registrieren",
+    "enterCredentials": "Bitte registriere dich, um fortzufahren."
+  },
+  "OTPPage": {
+    "title": "Verifizierungscode",
+    "description": "Du wirst automatisch weitergeleitet, wenn der Code bestätigt ist."
+  },
+  "Authentication": {
+    "signIn": "Einloggen",
+    "signUp": "Registrieren",
+    "alreadyHaveAccount": "Bereits ein Konto?",
+    "dontHaveAccount": "Noch kein Konto?",
+    "firstname": {
+      "label": "Vorname",
+      "placeholder": "Vorname eingeben"
+    },
+    "lastname": {
+      "label": "Name",
+      "placeholder": "Name eingeben"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email eingeben"
+    },
+    "password": {
+      "label": "Passwort",
+      "placeholder": "Passwort eingeben"
+    },
+    "forgotPassword": "Passwort vergessen?",
+    "orContinueWith": "oder",
+    "loggingIn": "Einloggen...",
+    "pleaseWait": "Bitte warten...",
+    "error": {
+      "required": "Pflichtfeld",
+      "email": "Ungültige E-Mail-Adresse",
+      "password": "Passwort muss mindestens 8 Zeichen lang sein"
+    }
+  },
+  "OnboardingPage": {
+    "title": "Willkommen",
+    "description": "Hier erstellen wir deine Organisation",
+    "organizationName": {
+      "label": "Organisationsname",
+      "placeholder": "Geben Sie den Namen Ihrer Organisation ein"
+    },
+    "createOrganization": "Erstelle Organisation",
+    "creating": "Wird erstellt..."
+  },
+  "DashboardPage": {
+    "title": "Dashboard",
+    "backToDashboard": "Zurück zum Dashboard",
+    "startOnboarding": "Starte Onboarding (Organisation erstellen)",
+    "signOut": "Abmelden",
+    "signingOut": "Abmelden..."
+  },
+  "actions": {
+    "auth": {
+      "fixErrorsBelow": "Bitte behebe die Fehler unten",
+      "userCreatedSuccessfully": "Benutzer erfolgreich erstellt! Bitte überprüfe deine E-Mail zur Bestätigung.",
+      "somethingWentWrong": "Etwas ist schief gelaufen. Bitte versuche es erneut.",
+      "signedInSuccessfully": "Erfolgreich angemeldet!",
+      "invalidEmailOrPassword": "Ungültige E-Mail oder Passwort",
+      "emailVerificationRequired": "E-Mail-Verifizierung erforderlich",
+      "emailVerifiedSuccessfully": "E-Mail erfolgreich verifiziert!",
+      "invalidVerificationCode": "Ungültiger Bestätigungscode. Bitte versuche es erneut.",
+      "organizationCreatedSuccessfully": "Organisation erfolgreich erstellt! Weiterleitung...",
+      "organizationIdRequired": "Organisations-ID ist erforderlich",
+      "failedToFetchOrganization": "Fehler beim Abrufen der Organisation",
+      "failedToGenerateOAuthUrl": "Fehler beim Generieren der {provider} OAuth-URL",
+      "emailRequired": "E-Mail ist erforderlich",
+      "passwordResetEmailSent": "Passwort-Reset-E-Mail erfolgreich gesendet! Bitte überprüfe deine E-Mail.",
+      "failedToSendPasswordReset": "Fehler beim Senden der Passwort-Reset-E-Mail",
+      "tokenAndPasswordRequired": "Token und neues Passwort sind erforderlich",
+      "passwordResetSuccessfully": "Passwort erfolgreich zurückgesetzt! Weiterleitung zur Anmeldung...",
+      "failedToResetPassword": "Fehler beim Zurücksetzen des Passworts"
+    }
+  },
+  "validation": {
+    "required": "Pflichtfeld",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "tooSmall": "Zu kurz: Mindestens 8 Zeichen erforderlich",
+    "tooLong": "Zu lang: Maximal 255 Zeichen erlaubt",
+    "tooLong20": "Zu lang: Maximal 20 Zeichen erlaubt",
+    "tooLong100": "Zu lang: Maximal 100 Zeichen erlaubt"
+  },
+  "PasswordResetPage": {
+    "title": "Passwort zurücksetzen",
+    "description": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen des Passworts.",
+    "emailSent": "Passwort-Reset-E-Mail gesendet!",
+    "checkEmail": "Bitte überprüfe deine E-Mail für weitere Anweisungen.",
+    "backToSignIn": "Zurück zur Anmeldung",
+    "sending": "Wird gesendet...",
+    "sendResetLink": "Reset-Link senden"
+  },
+  "NewPasswordPage": {
+    "title": "Neues Passwort festlegen",
+    "description": "Gib dein neues Passwort unten ein.",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "passwordsMustMatch": "Passwörter müssen übereinstimmen",
+    "resetPassword": "Passwort zurücksetzen",
+    "resetting": "Wird zurückgesetzt...",
+    "passwordResetSuccess": "Passwort erfolgreich zurückgesetzt!",
+    "redirectingToSignIn": "Weiterleitung zur Anmeldung..."
   }
+}

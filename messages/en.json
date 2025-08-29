@@ -1,110 +1,136 @@
 {
-    "common": {
-      "langSwitcher": {
-        "de": "German",
-        "en": "English"
-      }
-    },
-    "components": {
-      "TaskExample": {
-        "title": "Tasks",
-        "addTask": "Add task"
-      }
-    },
-    "HomePage": {
-      "signIn": "Sign in",
-      "signUp": "Register",
-      "included": {
-        "shadcn": "Shadcn UI Components integrated",
-        "tailwind-css": "Tailwind CSS integrated",
-        "next-intl": "Next Intl integrated + Language Switcher",
-        "next-themes": "Next Theme (Dark/light) integrated + Toggle",
-        "workos": "WorkOS Auth integrated",
-        "convex": "Convex integrated"
-      }
-    },
-    "SignInPage": {
-      "title": "Sign in",
-      "enterCredentials": "Please sign in to continue."
-    },
-    "SignUpPage": {
-      "title": "Sign up",
-      "enterCredentials": "Please sign up to continue."
-    },
-    "OTPPage": {
-      "title": "Enter verification code",
-      "description": "You will be automatically redirected after the code is confirmed."
-    },
-    "Authentication": {
-      "signIn": "Sign in",
-      "signUp": "Sign up",
-      "alreadyHaveAccount": "Already have an account?",
-      "dontHaveAccount": "Don't have an account?",
-      "firstname": {
-        "label": "First name",
-        "placeholder": "Enter your first name"
-      },
-      "lastname": {
-        "label": "Last name",
-        "placeholder": "Enter your last name"
-      },
-      "email": {
-        "label": "Email",
-        "placeholder": "Enter your email"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password"
-      },
-      "forgotPassword": "Forgot password?",
-      "orContinueWith": "oder",
-      "loggingIn": "Logging in...",
-      "pleaseWait": "Please wait...",
-      "error": {
-        "required": "Required",
-        "email": "Invalid email address",
-        "password": "Password must be at least 8 characters long"
-      }
-    },
-    "OnboardingPage": {
-      "title": "Welcome",
-      "description": "Here we create your organization",
-      "organizationName": {
-        "label": "Organization name",
-        "placeholder": "Enter your organization name"
-      },
-      "createOrganization": "Create organization",
-      "creating": "Creating..."
-    },
-    "DashboardPage": {
-      "title": "Dashboard",
-      "backToDashboard": "Back to dashboard",
-      "startOnboarding": "Start Onboarding (Organization creation)",
-      "signOut": "Sign out",
-      "signingOut": "Signing out..."
-    },
-    "actions": {
-      "auth": {
-        "fixErrorsBelow": "Please fix the errors below",
-        "userCreatedSuccessfully": "User created successfully! Please check your email for verification.",
-        "somethingWentWrong": "Something went wrong. Please try again.",
-        "signedInSuccessfully": "Signed in successfully!",
-        "invalidEmailOrPassword": "Invalid email or password",
-        "emailVerificationRequired": "Email verification required",
-        "emailVerifiedSuccessfully": "Email verified successfully!",
-        "invalidVerificationCode": "Invalid verification code. Please try again.",
-        "organizationCreatedSuccessfully": "Organization created successfully! Redirecting...",
-        "organizationIdRequired": "Organization ID is required",
-        "failedToFetchOrganization": "Failed to fetch organization",
-        "failedToGenerateOAuthUrl": "Failed to generate {provider} OAuth URL"
-      }
-    },
-    "validation": {
-      "required": "Required",
-      "invalidEmail": "Invalid email address",
-      "tooSmall": "Too small: expected string to have >=8 characters",
-      "tooLong": "Too long: expected string to have <=255 characters",
-      "tooLong20": "Too long: expected string to have <=20 characters",
-      "tooLong100": "Too long: expected string to have <=100 characters"
+  "common": {
+    "langSwitcher": {
+      "de": "German",
+      "en": "English"
     }
+  },
+  "components": {
+    "TaskExample": {
+      "title": "Tasks",
+      "addTask": "Add task"
+    }
+  },
+  "HomePage": {
+    "signIn": "Sign in",
+    "signUp": "Register",
+    "included": {
+      "shadcn": "Shadcn UI Components integrated",
+      "tailwind-css": "Tailwind CSS integrated",
+      "next-intl": "Next Intl integrated + Language Switcher",
+      "next-themes": "Next Theme (Dark/light) integrated + Toggle",
+      "workos": "WorkOS Auth integrated",
+      "convex": "Convex integrated"
+    }
+  },
+  "SignInPage": {
+    "title": "Sign in",
+    "enterCredentials": "Please sign in to continue."
+  },
+  "SignUpPage": {
+    "title": "Sign up",
+    "enterCredentials": "Please sign up to continue."
+  },
+  "OTPPage": {
+    "title": "Enter verification code",
+    "description": "You will be automatically redirected after the code is confirmed."
+  },
+  "Authentication": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "firstname": {
+      "label": "First name",
+      "placeholder": "Enter your first name"
+    },
+    "lastname": {
+      "label": "Last name",
+      "placeholder": "Enter your last name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "or",
+    "loggingIn": "Logging in...",
+    "pleaseWait": "Please wait...",
+    "error": {
+      "required": "Required",
+      "email": "Invalid email address",
+      "password": "Password must be at least 8 characters long"
+    }
+  },
+  "OnboardingPage": {
+    "title": "Welcome",
+    "description": "Here we create your organization",
+    "organizationName": {
+      "label": "Organization name",
+      "placeholder": "Enter your organization name"
+    },
+    "createOrganization": "Create organization",
+    "creating": "Creating..."
+  },
+  "DashboardPage": {
+    "title": "Dashboard",
+    "backToDashboard": "Back to dashboard",
+    "startOnboarding": "Start Onboarding (Organization creation)",
+    "signOut": "Sign out",
+    "signingOut": "Signing out..."
+  },
+  "actions": {
+    "auth": {
+      "fixErrorsBelow": "Please fix the errors below",
+      "userCreatedSuccessfully": "User created successfully! Please check your email for verification.",
+      "somethingWentWrong": "Something went wrong. Please try again.",
+      "signedInSuccessfully": "Signed in successfully!",
+      "invalidEmailOrPassword": "Invalid email or password",
+      "emailVerificationRequired": "Email verification required",
+      "emailVerifiedSuccessfully": "Email verified successfully!",
+      "invalidVerificationCode": "Invalid verification code. Please try again.",
+      "organizationCreatedSuccessfully": "Organization created successfully! Redirecting...",
+      "organizationIdRequired": "Organization ID is required",
+      "failedToFetchOrganization": "Failed to fetch organization",
+      "failedToGenerateOAuthUrl": "Failed to generate {provider} OAuth URL",
+      "emailRequired": "Email is required",
+      "passwordResetEmailSent": "Password reset email sent successfully! Please check your email.",
+      "failedToSendPasswordReset": "Failed to send password reset email",
+      "tokenAndPasswordRequired": "Token and new password are required",
+      "passwordResetSuccessfully": "Password reset successfully! Redirecting to sign in...",
+      "failedToResetPassword": "Failed to reset password"
+    }
+  },
+  "validation": {
+    "required": "Required",
+    "invalidEmail": "Invalid email address",
+    "tooSmall": "Too small: expected string to have >=8 characters",
+    "tooLong": "Too long: expected string to have <=255 characters",
+    "tooLong20": "Too long: expected string to have <=20 characters",
+    "tooLong100": "Too long: expected string to have <=100 characters"
+  },
+  "PasswordResetPage": {
+    "title": "Reset Password",
+    "description": "Enter your email address and we'll send you a password reset link.",
+    "emailSent": "Password reset email sent!",
+    "checkEmail": "Please check your email for further instructions.",
+    "backToSignIn": "Back to sign in",
+    "sending": "Sending...",
+    "sendResetLink": "Send Reset Link"
+  },
+  "NewPasswordPage": {
+    "title": "Set New Password",
+    "description": "Enter your new password below.",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsMustMatch": "Passwords must match",
+    "resetPassword": "Reset Password",
+    "resetting": "Resetting...",
+    "passwordResetSuccess": "Password Reset Successful!",
+    "redirectingToSignIn": "Redirecting to sign in..."
   }
+}

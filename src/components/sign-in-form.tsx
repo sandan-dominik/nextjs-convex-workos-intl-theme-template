@@ -83,17 +83,17 @@ export default function SignInForm() {
       <CardContent className="space-y-8">
         {state && state.success && <p className="bg-green-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
         {state && !state.success && <p className="bg-red-500 mt-1 p-2 rounded-md text-white text-sm">{state.message}</p>}
-        <div className="gap-4 grid">
-          <OAuthButton provider="GoogleOAuth" className="w-full">
+        <div className="gap-4 grid grid-cols-4">
+          <OAuthButton provider="GoogleOAuth" className="w-full" iconsOnly={true}>
             Google
           </OAuthButton>
-          <OAuthButton provider="GitHubOAuth" className="w-full">
+          <OAuthButton provider="GitHubOAuth" className="w-full" iconsOnly={true}>
             GitHub
           </OAuthButton>
-          <OAuthButton provider="MicrosoftOAuth" className="w-full">
+          <OAuthButton provider="MicrosoftOAuth" className="w-full" iconsOnly={true}>
             Microsoft
           </OAuthButton>
-          <OAuthButton provider="AppleOAuth" className="w-full">
+          <OAuthButton provider="AppleOAuth" className="w-full" iconsOnly={true}>
             Apple
           </OAuthButton>
         </div>
@@ -120,7 +120,7 @@ export default function SignInForm() {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label htmlFor="password">{tAuth("password.label")}</Label>
-              <Link href="/forgot-password" className="text-sm hover:underline">
+              <Link href="/reset-password" className="text-sm hover:underline">
                 {tAuth("forgotPassword")}
               </Link>
             </div>
