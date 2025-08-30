@@ -1,4 +1,4 @@
-import NewPasswordForm from "@/components/new-password-form";
+import NewPasswordForm from "@/app/(auth)/_components/new-password-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";

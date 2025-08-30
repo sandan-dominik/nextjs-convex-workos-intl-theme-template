@@ -14,7 +14,8 @@ interface Organization {
   object: string;
   createdAt: string;
   updatedAt: string;
-  domains: Array<{
+  role?: unknown;
+  domains?: Array<{
     object: string;
     id: string;
     domain: string;
@@ -24,7 +25,7 @@ interface Organization {
     createdAt: string;
     updatedAt: string;
   }>;
-  metadata: Record<string, string>;
+  metadata?: Record<string, string>;
 }
 
 interface OrganizationSelectorProps {

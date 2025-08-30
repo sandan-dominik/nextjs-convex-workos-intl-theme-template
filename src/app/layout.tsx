@@ -40,7 +40,7 @@ export default function RootLayout({
         >
           <NextIntlClientProvider>
               <ConvexClientProvider>
-              <div className="top-4 right-4 fixed flex">
+              <div className="top-4 right-4 z-60 fixed flex">
                 <LanguageSwitcher variant="flag" />
                 <ThemeToggle />
               </div>

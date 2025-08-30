@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { withAuth } from '@workos-inc/authkit-nextjs';
-import TaskExample from "@/components/task-example";
-import SignOutButton from "@/components/sign-out-button";
+import TaskExample from "@/app/(marketing)/_components/task-example";
+import SignOutButton from "@/app/(protected)/(dashboard)/_components/sign-out-button";
 
 export default async function Home() {
   const t = await getTranslations("HomePage");

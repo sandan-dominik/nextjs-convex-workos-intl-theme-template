@@ -1,13 +1,13 @@
 "use client";
 
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { api } from "../../../../convex/_generated/api";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { CheckIcon, Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
-import { Id } from "../../convex/_generated/dataModel";
-import { Skeleton } from "./ui/skeleton";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "next-intl";
 
 export default function TaskExample() {

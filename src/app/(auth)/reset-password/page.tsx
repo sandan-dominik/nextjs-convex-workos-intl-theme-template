@@ -1,9 +1,8 @@
-import PasswordResetForm from "@/components/password-reset-form";
+import PasswordResetForm from "@/app/(auth)/_components/password-reset-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
 
-export default async function PasswordResetPage() {
-
+export default function ResetPasswordPage() {
   return (
     <div className="flex flex-col justify-center items-center gap-6 p-6 md:p-10 min-h-svh">
       <Link href="/" className="flex items-center self-center gap-2 font-medium">

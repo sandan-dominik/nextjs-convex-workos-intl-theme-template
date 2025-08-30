@@ -40,7 +40,8 @@
   },
   "OTPPage": {
     "title": "Verifizierungscode",
-    "description": "Du wirst automatisch weitergeleitet, wenn der Code bestätigt ist."
+    "description": "Du wirst automatisch weitergeleitet, wenn der Code bestätigt ist.",
+    "verifying": "Verifizieren..."
   },
   "Authentication": {
     "signIn": "Einloggen",

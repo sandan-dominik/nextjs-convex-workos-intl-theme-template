@@ -16,7 +16,7 @@ import { signIn } from "@/app/actions/auth";
 import { useActionState, useEffect, startTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { createSignInSchema } from "@/schemas/zod/auth";
-import OAuthButton from "@/components/oauth-button";
+import OAuthButton from "@/app/(auth)/_components/oauth-button";
 
 export default function SignInForm() {
   const t = useTranslations("SignInPage");
@@ -62,7 +62,7 @@ export default function SignInForm() {
       console.log('Redirecting to:', state.redirect);
       setTimeout(() => {
         router.push(state.redirect as string);
-      }, 3000);
+      }, 10000);
     }
   }, [state, setError, router]);
 

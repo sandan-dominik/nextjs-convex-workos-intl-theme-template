@@ -12,9 +12,9 @@ import { useTranslations } from "next-intl";
 import { signUp } from "@/app/actions/auth";
 import { useActionState, useEffect, startTransition } from "react";
 import { createSignUpSchema } from "@/schemas/zod/auth";
-import { Loader2 } from "lucide-react";
+import { Loader2, RocketIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import OAuthButton from "@/components/oauth-button";
+import OAuthButton from "@/app/(auth)/_components/oauth-button";
 
 export default function SignUpForm() {
   const t = useTranslations("SignUpPage");
@@ -57,7 +57,9 @@ export default function SignUpForm() {
 
     // Handle successful signup
     if (state?.success && state?.redirect) {
-      router.push(state.redirect);
+      setTimeout(() => {
+        router.push(state.redirect as string);
+      }, 3000);
     }
   }, [state, setError, router]);
 
@@ -161,8 +163,11 @@ export default function SignUpForm() {
                 <p className="mt-1 text-red-500 text-sm">{tAuth("error.password")}</p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={(isPending || isSubmitting)}>
-              {(isPending || isSubmitting) ? <Loader2 className="animate-spin" /> : tAuth("signUp")}
+            <Button type="submit" className="w-full cursor-pointer" disabled={(isPending || isSubmitting)}>
+              {(isPending || isSubmitting) ? <Loader2 className="animate-spin" /> : <>
+                {tAuth("signUp")}
+                <RocketIcon className="w-4 h-4" />
+              </>}
             </Button>
             <div className="text-sm text-center">
               {tAuth("alreadyHaveAccount")} {" "}

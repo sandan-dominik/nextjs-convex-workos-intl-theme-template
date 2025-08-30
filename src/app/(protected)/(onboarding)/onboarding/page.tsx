@@ -1,5 +1,6 @@
 import { withAuth } from "@workos-inc/authkit-nextjs";
-import OnboardingForm from "@/components/onboarding-form";
+import OnboardingForm from "@/app/(protected)/(onboarding)/_components/onboarding-form";
+
 export default async function OnboardingPage() {
   await withAuth({ensureSignedIn: true});
   return (

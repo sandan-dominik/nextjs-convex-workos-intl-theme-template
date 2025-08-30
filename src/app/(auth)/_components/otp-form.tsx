@@ -19,7 +19,9 @@ export default function OTPForm() {
   // Handle successful verification
   useEffect(() => {
     if (state?.success && state?.redirect) {
-      router.push(state.redirect);
+      setTimeout(() => {
+        router.push(state.redirect as string);
+      }, 3000);
     }
   }, [state, router]);
 
@@ -81,7 +83,7 @@ export default function OTPForm() {
             <div className="flex justify-center items-center space-x-2">
               <Loader2 className="animate-spin" />
               <span className="text-muted-foreground text-sm">
-                Verifying code...
+                {t("verifying")}
               </span>
             </div>
           )}

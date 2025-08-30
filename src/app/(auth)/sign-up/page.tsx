@@ -1,6 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react"
 
-import SignUpForm from "@/components/sign-up-form"
+import SignUpForm from "@/app/(auth)/_components/sign-up-form"
 import Link from "next/link"
 import { withAuth } from "@workos-inc/authkit-nextjs";
 import { redirect } from "next/navigation";

@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { signout } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
 import { useActionState, startTransition, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type SignOutButtonProps = {
   className?: string;
@@ -31,20 +31,21 @@ export default function SignOutButton({ className }: SignOutButtonProps) {
   };
 
   return (
-    <Button 
-      onClick={handleSignOut} 
-      disabled={isPending}
-      variant="destructive"
-      className={cn("cursor-pointer", className)}
-    >
-      {isPending ? (
-        <>
-          <Loader2 className="mr-2 animate-spin" />
-          {t("signingOut")}
-        </>
-      ) : (
-        t("signOut")
-      )}
-    </Button>
+    <>
+      <DropdownMenuItem onClick={handleSignOut} className={cn("cursor-pointer", className)}>
+        {isPending ? (
+          <>
+            <Loader2 className="mr-2 animate-spin" />
+            {t("signingOut")}
+          </>
+        ) : (
+          <>
+            <LogOut />
+            {t("signOut")}
+          </>
+        )}
+      </DropdownMenuItem>
+    </>
+
   );
 }

@@ -19,7 +19,7 @@ export const GET = handleAuth({
             
             // Type guard to check if rawData has a code property
             if (rawData && typeof rawData === 'object' && rawData !== null && 'code' in rawData) {
-                const errorData = rawData as { code: string; pending_authentication_token?: string; available_organizations?: unknown[] };
+                const errorData = rawData as { code: string; pending_authentication_token?: string; organizations?: unknown[] };
                 const errorCode = errorData.code;
 
                 console.log('errorCode:', errorCode);
@@ -28,7 +28,7 @@ export const GET = handleAuth({
                     case 'organization_selection_required': {
                         // Redirect to organization selection page with token and organizations
                         const orgToken = errorData.pending_authentication_token || '';
-                        const organizations = errorData.available_organizations || [];
+                        const organizations = errorData.organizations || [];
                         
                         console.log('Organization selection error details:', {
                             token: orgToken,
@@ -44,7 +44,7 @@ export const GET = handleAuth({
                         } else {
                             // If no organizations provided, just pass the token
                             console.log('No organizations provided, falling back to API fetch');
-                            return Response.redirect(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/select-organization?token=${orgToken}`);
+                            return Response.redirect(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/select-organization?token=${orgToken}&org`);
                         }
                     }
                     
