@@ -36,7 +36,7 @@ export default async function AppSidebarWrapper({ variant }: AppSidebarProps) {
     id: org.id,
     name: org.name,
     iconName: ['Building2', 'GalleryVerticalEnd', 'AudioWaveform', 'Command'][index % 4],
-    plan: (org.role as WorkOSRole)?.slug ? (org.role as WorkOSRole).slug.charAt(0).toUpperCase() + (org.role as WorkOSRole).slug.slice(1) : "FREE",
+    role: (org.role as WorkOSRole)?.slug ? (org.role as WorkOSRole).slug.charAt(0).toUpperCase() + (org.role as WorkOSRole).slug.slice(1) : "FREE",
     active: org.id === currentOrgId,
   }));
 

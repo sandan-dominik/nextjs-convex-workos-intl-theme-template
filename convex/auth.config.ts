@@ -17,6 +17,8 @@ const authConfig = {
       applicationID: clientId,
     },
   ],
+  debug: true,
+  devMode: true,
 };
 
 export default authConfig;

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getOrganization } from "@/app/actions/auth";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { SubscriptionBadge } from "@/components/autumn/subscription-badge";
 
 export default async function DashboardPage() {
   const { user, sessionId, organizationId } = await withAuth({ ensureSignedIn: true });
@@ -11,7 +12,6 @@ export default async function DashboardPage() {
   // Fetch organization data using server action
   const organizationResult = organizationId ? await getOrganization(organizationId) : null;
   const organization = organizationResult?.success ? organizationResult.organization : null;
-
   return (
     <>
       <div className="flex flex-col flex-1 gap-6 p-6">
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
               <div className="flex-1 space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Organization Details</CardTitle>
+                    <CardTitle>Organization Details<SubscriptionBadge className="ml-2" /></CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2 text-sm">
                     <p className="flex justify-between">
@@ -69,12 +69,8 @@ export default async function DashboardPage() {
                       <span className="font-mono text-xs">{sessionId}</span>
                     </p>
                     <p className="flex justify-between">
-                      <span className="text-muted-foreground">Created</span>
-                      <span>{new Date(user.createdAt).toLocaleDateString()}</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-muted-foreground">Updated</span>
-                      <span>{new Date(user.updatedAt).toLocaleDateString()}</span>
+                      <span className="text-muted-foreground">Created/Updated</span>
+                      <span>{new Date(user.createdAt).toLocaleDateString()} / {new Date(user.updatedAt).toLocaleDateString()}</span>
                     </p>
                   </CardContent>
                 </Card>

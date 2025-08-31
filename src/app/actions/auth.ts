@@ -36,7 +36,7 @@ export async function signUp(prevState: ActionResponse | null, formData: FormDat
     }
 
     try {
-        const user = await workos.userManagement.createUser({
+        await workos.userManagement.createUser({
             email: validatedData.data.email,
             password: validatedData.data.password,
             firstName: validatedData.data.firstname,
@@ -44,7 +44,6 @@ export async function signUp(prevState: ActionResponse | null, formData: FormDat
             emailVerified: false,
         });
 
-        console.log(user);
         return {
             success: true,
             message: t("userCreatedSuccessfully"),
@@ -255,7 +254,7 @@ export async function createOrganization(prevState: ActionResponse | null, formD
         return {
             success: true,
             message: t("organizationCreatedSuccessfully"),
-            redirect: '/dashboard'
+            redirect: '/subscription'
         };
     } catch (error: unknown) {
         console.log('Create organization error:', error);

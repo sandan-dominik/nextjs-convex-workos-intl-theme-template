@@ -4,12 +4,10 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { withAuth } from '@workos-inc/authkit-nextjs';
 import TaskExample from "@/app/(marketing)/_components/task-example";
-import SignOutButton from "@/app/(protected)/(dashboard)/_components/sign-out-button";
 
 export default async function Home() {
   const t = await getTranslations("HomePage");
   const { user } = await withAuth({ensureSignedIn: false});
-  console.log(user);
 
   return (
     <div className="justify-items-center items-center gap-16 grid grid-rows-[20px_1fr_20px] p-8 sm:p-20 pb-20 min-h-screen font-[family-name:var(--font-geist-sans)]">
@@ -37,8 +35,7 @@ export default async function Home() {
             <p>Welcome, {user.firstName} {user.lastName}</p>
             <Button variant="outline">
               <Link href="/dashboard">Dashboard</Link>
-            </Button>
-            <SignOutButton/>   
+            </Button>   
             </>
           ) : (
             <>
@@ -51,7 +48,6 @@ export default async function Home() {
             </>
           )}
         </div>
-
         <TaskExample />
       </main>
     </div>

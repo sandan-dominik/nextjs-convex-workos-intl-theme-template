@@ -20,12 +20,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { SubscriptionBadge } from "@/components/autumn/subscription-badge"
 
 interface Organization {
   id: string
   name: string
   iconName: string
-  plan: string
+  role: string
   active: boolean
 }
 
@@ -85,7 +86,7 @@ export function OrganizationSwitcher({
               </div>
               <div className="flex-1 grid text-sm text-left leading-tight">
                 <span className="font-medium truncate">{activeOrganization.name}</span>
-                <span className="text-xs truncate">{activeOrganization.plan}</span>
+                <span className="text-xs truncate"><SubscriptionBadge variant="text" /></span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>

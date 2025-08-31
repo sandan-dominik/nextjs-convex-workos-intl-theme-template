@@ -36,7 +36,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
     id: string
     name: string
     iconName: string
-    plan: string
+    role: string
     active: boolean
   }[]
   variant?: "inset" | "sidebar" | "floating"
@@ -80,8 +80,8 @@ const navMain = [
         url: "/settings",
       },
       {
-        title: "Billing",
-        url: "/settings/billing",
+        title: "Subscription",
+        url: "/subscription",
       },
     ],
   },
