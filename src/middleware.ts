@@ -2,7 +2,6 @@ import { authkit } from "@workos-inc/authkit-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(request: NextRequest) {
-  const protectedRoutes = ['/dashboard', '/onboarding', '/subscription'];
   const signInRoutes = ['/sign-in', '/sign-up', "/verify-email", "/reset-password", "/new-password", "/select-organization"];
   
   console.log('🔍 Middleware - URL:', request.url);

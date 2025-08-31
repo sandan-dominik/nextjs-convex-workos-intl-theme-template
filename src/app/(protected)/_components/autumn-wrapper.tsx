@@ -12,7 +12,6 @@ export function AutumnWrapper({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { organizationId } = useAuth();
   const [autumnReady, setAutumnReady] = useState(false);
-  const [forceUpdate, setForceUpdate] = useState(0);
 
   // Debug logging
   useEffect(() => {
@@ -21,10 +20,9 @@ export function AutumnWrapper({ children }: { children: React.ReactNode }) {
       isAuthenticated,
       organizationId,
       autumnReady,
-      forceUpdate,
       timestamp: new Date().toISOString()
     });
-  }, [isLoading, isAuthenticated, organizationId, autumnReady, forceUpdate]);
+  }, [isLoading, isAuthenticated, organizationId, autumnReady]);
 
   // Memoize the auth state
   const isReady = useMemo(() => {
