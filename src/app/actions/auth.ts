@@ -4,6 +4,7 @@ import { getWorkOS, saveSession, signOut, withAuth, switchToOrganization } from 
 import { createSignInSchema, createSignUpSchema, createOrganizationSchema } from '@/schemas/zod/auth';
 import util from 'util';
 import { getTranslations } from 'next-intl/server';
+
 type ActionResponse = {
     success: boolean;
     message?: string;
@@ -246,9 +247,13 @@ export async function createOrganization(prevState: ActionResponse | null, formD
             throw new Error('NEXT_PUBLIC_APP_URL is not configured');
         }
 
-        await switchToOrganization(organization.id, {
-            returnTo: `${appUrl}/api/auth/callback`,
-        });
+        try {
+            const authResponse = await switchToOrganization(organization.id);
+            console.log('Auth response:', authResponse);
+        } catch (error: unknown) {
+            console.error('Error switching to organization:', error);
+            throw error;
+        }
 
         // If we reach here, the switch was successful
         return {
@@ -268,98 +273,6 @@ export async function createOrganization(prevState: ActionResponse | null, formD
         return {
             success: false,
             message: error instanceof Error ? error.message : t("somethingWentWrong"),
-            error: null
-        };
-    }
-}
-
-export async function generateOAuthUrl(provider: 'GoogleOAuth' | 'GitHubOAuth' | 'MicrosoftOAuth' | 'AppleOAuth' | 'SlackOAuth'): Promise<{ success: boolean; url?: string; error?: string }> {
-    const t = await getTranslations("actions.auth");
-    try {
-        const workos = getWorkOS();
-
-        // Validate that we have the required environment variables
-        const clientId = process.env.WORKOS_CLIENT_ID;
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-        if (!clientId) {
-            throw new Error('WORKOS_CLIENT_ID is not configured');
-        }
-
-        if (!appUrl) {
-            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
-        }
-
-        const oauthUrl = workos.userManagement.getAuthorizationUrl({
-            clientId,
-            provider,
-            redirectUri: `${appUrl}/api/auth/callback`,
-        });
-
-        return { success: true, url: oauthUrl };
-    } catch (error) {
-        console.error(`Error generating ${provider} OAuth URL:`, error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : t("failedToGenerateOAuthUrl", { provider })
-        };
-    }
-}
-
-// Convenience functions for specific providers
-export async function generateGoogleOAuthUrl() {
-    return generateOAuthUrl('GoogleOAuth');
-}
-
-export async function generateGitHubOAuthUrl() {
-    return generateOAuthUrl('GitHubOAuth');
-}
-
-export async function generateMicrosoftOAuthUrl() {
-    return generateOAuthUrl('MicrosoftOAuth');
-}
-
-export async function generateAppleOAuthUrl() {
-    return generateOAuthUrl('AppleOAuth');
-}
-
-export async function generateSlackOAuthUrl() {
-    return generateOAuthUrl('SlackOAuth');
-}
-
-export async function getOrganization(organizationId: string) {
-    const t = await getTranslations("actions.auth");
-    try {
-        const workos = getWorkOS();
-
-        if (!organizationId) {
-            return {
-                success: false,
-                message: t("organizationIdRequired"),
-                organization: null
-            };
-        }
-
-        const organization = await workos.organizations.getOrganization(organizationId);
-
-        return {
-            success: true,
-            organization: {
-                id: organization.id,
-                name: organization.name,
-                object: organization.object,
-                createdAt: organization.createdAt,
-                updatedAt: organization.updatedAt,
-                domains: organization.domains,
-                metadata: organization.metadata
-            }
-        };
-    } catch (error: unknown) {
-        console.error('Error fetching organization:', error);
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : t("failedToFetchOrganization"),
-            organization: null,
             error: null
         };
     }
@@ -433,90 +346,6 @@ export async function resetPassword(prevState: ActionResponse | null, formData: 
     }
 }
 
-export async function getUserOrganizations(): Promise<ActionResponse & { organizations?: Array<{ id: string; name: string; object: string; createdAt: string; updatedAt: string; role: unknown }> }> {
-    const t = await getTranslations("actions.auth");
-    try {
-        const workos = getWorkOS();
-
-        const { user } = await withAuth({ ensureSignedIn: true });
-
-        // Get the current user's organizations
-        const organizations = await workos.userManagement.listOrganizationMemberships({
-            userId: user.id,
-        });
-
-        return {
-            success: true,
-            organizations: organizations.data.map(org => ({
-                id: org.organizationId,
-                name: org.organizationName,
-                object: org.object,
-                createdAt: org.createdAt,
-                updatedAt: org.updatedAt,
-                role: org.role,
-            }))
-        };
-    } catch (error: unknown) {
-        console.error('Error fetching user organizations:', error);
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : t("failedToFetchUserOrganizations"),
-            organizations: undefined,
-            error: null
-        };
-    }
-}
-
-export async function completeOAuthWithOrganization(pendingToken: string, organizationId: string): Promise<ActionResponse> {
-    const t = await getTranslations("actions.auth");
-    try {
-        if (!pendingToken || !organizationId) {
-            return {
-                success: false,
-                message: t("tokenAndOrganizationIdRequired"),
-            };
-        }
-
-        const workos = getWorkOS();
-
-        // Complete the OAuth authentication with the selected organization
-        const authResponse = await workos.userManagement.authenticateWithOrganizationSelection({
-            clientId: process.env.WORKOS_CLIENT_ID || '',
-            pendingAuthenticationToken: pendingToken,
-            organizationId: organizationId,
-        });
-
-        // Save the session
-        await saveSession(
-            {
-                accessToken: authResponse.accessToken,
-                refreshToken: authResponse.refreshToken,
-                user: authResponse.user,
-                impersonator: authResponse.impersonator,
-            },
-            '/auth/callback',
-        );
-
-        return {
-            success: true,
-            message: t("oauthCompletedSuccessfully"),
-        };
-    } catch (error: unknown) {
-        console.error('Error completing OAuth with organization:', error);
-
-        // Handle NEXT_REDIRECT specially as it's not an actual error
-        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
-            throw error;
-        }
-
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : t("failedToCompleteOAuth"),
-            error: null
-        };
-    }
-}
-
 export async function switchToSelectedOrganization(organizationId: string): Promise<ActionResponse> {
     const t = await getTranslations("actions.auth");
     try {
@@ -557,3 +386,74 @@ export async function switchToSelectedOrganization(organizationId: string): Prom
     }
 }
 
+export async function getOrganization(organizationId: string) {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+
+        if (!organizationId) {
+            return {
+                success: false,
+                message: t("organizationIdRequired"),
+                organization: null
+            };
+        }
+
+        const organization = await workos.organizations.getOrganization(organizationId);
+
+        return {
+            success: true,
+            organization: {
+                id: organization.id,
+                name: organization.name,
+                object: organization.object,
+                createdAt: organization.createdAt,
+                updatedAt: organization.updatedAt,
+                domains: organization.domains,
+                metadata: organization.metadata
+            }
+        };
+    } catch (error: unknown) {
+        console.error('Error fetching organization:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToFetchOrganization"),
+            organization: null,
+            error: null
+        };
+    }
+}
+
+export async function getUserOrganizations(): Promise<ActionResponse & { organizations?: Array<{ id: string; name: string; object: string; createdAt: string; updatedAt: string; role: unknown }> }> {
+    const t = await getTranslations("actions.auth");
+    try {
+        const workos = getWorkOS();
+
+        const { user } = await withAuth({ ensureSignedIn: true });
+
+        // Get the current user's organizations
+        const organizations = await workos.userManagement.listOrganizationMemberships({
+            userId: user.id,
+        });
+
+        return {
+            success: true,
+            organizations: organizations.data.map(org => ({
+                id: org.organizationId,
+                name: org.organizationName,
+                object: org.object,
+                createdAt: org.createdAt,
+                updatedAt: org.updatedAt,
+                role: org.role,
+            }))
+        };
+    } catch (error: unknown) {
+        console.error('Error fetching user organizations:', error);
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : t("failedToFetchUserOrganizations"),
+            organizations: undefined,
+            error: null
+        };
+    }
+}

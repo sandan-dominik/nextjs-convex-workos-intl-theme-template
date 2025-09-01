@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { Loader2, Building2, Check } from "lucide-react";
-import { getUserOrganizations, switchToSelectedOrganization, completeOAuthWithOrganization, signout } from "@/app/actions/auth";
+import { switchToSelectedOrganization, signout } from "@/app/actions/auth";
+import { getUserOrganizations, completeOAuthWithOrganization } from "@/lib/api-client";
 
 interface Organization {
   id: string;

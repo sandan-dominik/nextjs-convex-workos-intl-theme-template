@@ -9,6 +9,10 @@
     "TaskExample": {
       "title": "Tasks",
       "addTask": "Add task"
+    },
+    "OrganizationSwitcher": {
+      "current": "Current",
+      "organizations": "Organizations"
     }
   },
   "HomePage": {
@@ -161,5 +165,149 @@
     "switching": "Switching...",
     "continueToOrganization": "Sign In",
     "signOut": "Sign Out"
+  },
+  "SettingsPage": {
+    "title": "Settings",
+    "usageAndCredits": "Usage & Credits",
+    "availableCredits": "Available Credits",
+    "usedCredits": "Used Credits",
+    "remainingCredits": "Remaining Credits",
+    "noUsageDataAvailable": "No usage data available",
+    "noUsageDataAvailableDescription": "Please try again.",
+    "refresh": "Refresh",
+    "loadingAutumnCustomerData": "Loading Autumn customer data...",
+    "autumnNotReady": "Autumn not ready",
+    "waitingForCustomerDataToLoad": "Waiting for customer data to load...",
+    "retrying": "Retrying...",
+    "retryCount": "({retryCount}/3)"
+    },
+  "navigation": {
+    "platform": "Platform",
+    "dashboard": {
+      "title": "Dashboard",
+      "overview": "Overview"
+    },
+    "chat": "Chat",
+    "settings": {
+      "usageAndCredits": "Usage & Credits",
+      "subscription": "Subscription",
+      "title": "Settings",
+      "general": "General"
+    }
+  },
+  "pricing": {
+    "table": {
+      "loading": "Loading...",
+      "error": "Something went wrong...",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "everythingFrom": "Everything from {plan}, plus:",
+      "recommended": "Most Popular"
+    },
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "For individuals and small projects just getting started.",
+        "buttonText": "Get Started"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For growing teams that need more power and collaboration.",
+        "buttonText": "Get Started"
+      }
+    },
+    "features": {
+      "seats": {
+        "free": "1 user seat included",
+        "pro": "3 user seats included",
+        "additionalSeat": "$10/month for each additional seat."
+      },
+      "credits": {
+        "free": "10 credits per month",
+        "freeDescription": "For sending messages and other actions.",
+        "pro": "500 credits per month"
+      },
+      "support": {
+        "free": "Community support",
+        "pro": "Email & priority support"
+      }
+    },
+    "buttons": {
+      "startFreeTrial": "Start Free Trial",
+      "planScheduled": "Plan Scheduled",
+      "updatePlan": "Update Plan",
+      "currentPlan": "Current Plan",
+      "purchase": "Purchase",
+      "getStarted": "Get Started",
+      "renew": "Renew",
+      "upgrade": "Upgrade",
+      "downgrade": "Downgrade",
+      "cancelPlan": "Cancel Plan"
+    },
+    "price": {
+      "pro": "$29",
+      "perMonth": "per month"
+    }
+  },
+  "checkout": {
+    "titles": {
+      "purchase": "Purchase {productName}",
+      "updatePlan": "Update Plan",
+      "startTrial": "Start trial for {productName}",
+      "productScheduled": "{productName} product already scheduled",
+      "productActive": "Product already active",
+      "enableProduct": "Enable {productName}",
+      "subscribeTo": "Subscribe to {productName}",
+      "renew": "Renew",
+      "upgradeTo": "Upgrade to {productName}",
+      "downgradeTo": "Downgrade to {productName}",
+      "cancel": "Cancel",
+      "changeSubscription": "Change Subscription"
+    },
+    "messages": {
+      "purchase": "By clicking confirm, you will purchase {productName} and your card will be charged immediately.",
+      "updatePlan": "Update your prepaid quantity. You'll be charged or credited the prorated difference based on your current billing cycle.",
+      "startTrial": "By clicking confirm, you will start a free trial of {productName} which ends on {nextCycleAtStr}.",
+      "productScheduled": "You are currently on product {currentProductName} and are scheduled to start {productName} on {nextCycleAtStr}.",
+      "productActive": "You are already subscribed to this product.",
+      "enableProduct": "By clicking confirm, {productName} will be enabled immediately.",
+      "subscribeTo": "By clicking confirm, you will be subscribed to {productName} and your card will be charged immediately.",
+      "renew": "By clicking confirm, you will renew your subscription to {productName}.",
+      "upgradeTo": "By clicking confirm, you will upgrade to {productName} and your payment method will be charged immediately.",
+      "downgradeTo": "By clicking confirm, your current subscription to {currentProductName} will be cancelled and a new subscription to {productName} will begin on {nextCycleAtStr}.",
+      "cancel": "By clicking confirm, your subscription to {currentProductName} will end on {nextCycleAtStr}.",
+      "changeSubscription": "You are about to change your subscription."
+    },
+    "buttons": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "pricing": {
+      "totalDueToday": "Total due today",
+      "dueNextCycle": "Due next cycle ({nextCycleAtStr})",
+      "usagePrices": "+ usage prices",
+      "price": "Price",
+      "viewDetails": "View details",
+      "subscription": "Subscription",
+      "free": "Free",
+      "quantity": "Qty:",
+      "billingMultiplier": "x"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "startConversation": "Start a conversation",
+    "send": "Send",
+    "sending": "Sending...",
+    "insufficientCredits": "Insufficient credits. Please purchase more credits to continue.",
+    "selectModel": "Select Model",
+    "imageMode": "Image Mode",
+    "purchaseMore": "Purchase more credits",
+    "failedToSendMessage": "Failed to send message. Please try again.",
+    "typeYourMessage": "Type your message...",
+    "credits": "Credits",
+    "credit": "Credit",
+    "used": "Used"
   }
 }

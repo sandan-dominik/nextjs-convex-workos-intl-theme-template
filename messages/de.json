@@ -9,6 +9,10 @@
     "TaskExample": {
       "title": "Aufgaben",
       "addTask": "Aufgabe erstellen"
+    },
+    "OrganizationSwitcher": {
+      "current": "Aktuell",
+      "organizations": "Organisationen"
     }
   },
   "HomePage": {
@@ -161,5 +165,148 @@
     "switching": "Wird gestartet...",
     "continueToOrganization": "Anmelden",
     "signOut": "Abmelden"
+  },
+  "SettingsPage": {
+    "title": "Einstellungen",
+    "usageAndCredits": "Nutzung und Credits",
+    "availableCredits": "Verfügbare Credits",
+    "usedCredits": "Verwendete Credits",
+    "remainingCredits": "Verbleibende Credits",
+    "noUsageDataAvailable": "Keine Nutzungsdaten verfügbar",
+    "noUsageDataAvailableDescription": "Bitte versuche es erneut.",
+    "refresh": "Aktualisieren",
+    "loadingAutumnCustomerData": "Lade Autumn-Kunden-Daten...",
+    "autumnNotReady": "Autumn nicht bereit",
+    "waitingForCustomerDataToLoad": "Warte auf Laden der Autumn-Kunden-Daten...",
+    "retrying": "Wird erneut versucht...",
+    "retryCount": "({retryCount}/3)"
+  },
+  "navigation": {
+    "platform": "Plattform",
+    "dashboard": {
+      "title": "Dashboard",
+      "overview": "Übersicht"
+    },
+    "chat": "Chat",
+    "settings": {
+      "title": "Einstellungen",
+      "usageAndCredits": "Nutzung und Credits",
+      "subscription": "Abonnement"
+    }
+  },
+  "pricing": {
+    "table": {
+      "loading": "Wird geladen...",
+      "error": "Etwas ist schief gelaufen...",
+      "monthly": "Monatlich",
+      "annual": "Jährlich",
+      "everythingFrom": "Alles von {plan}, plus:",
+      "recommended": "Am beliebtesten"
+    },
+    "plans": {
+      "free": {
+        "name": "Kostenlos",
+        "description": "Für Einzelpersonen und kleine Projekte, die gerade erst anfangen.",
+        "buttonText": "Loslegen"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Für wachsende Teams, die mehr Leistung und Zusammenarbeit benötigen.",
+        "buttonText": "Loslegen"
+      }
+    },
+    "features": {
+      "seats": {
+        "free": "1 Benutzerplatz inklusive",
+        "pro": "3 Benutzerplätze inklusive",
+        "additionalSeat": "$10/Monat für jeden zusätzlichen Platz."
+      },
+      "credits": {
+        "free": "10 Credits pro Monat",
+        "freeDescription": "Für das Senden von Nachrichten und andere Aktionen.",
+        "pro": "500 Credits pro Monat"
+      },
+      "support": {
+        "free": "Community-Support",
+        "pro": "E-Mail- und Prioritäts-Support"
+      }
+    },
+    "buttons": {
+      "startFreeTrial": "Kostenlose Testversion starten",
+      "planScheduled": "Plan geplant",
+      "updatePlan": "Plan aktualisieren",
+      "currentPlan": "Aktueller Plan",
+      "purchase": "Kaufen",
+      "getStarted": "Loslegen",
+      "renew": "Verlängern",
+      "upgrade": "Upgrade",
+      "downgrade": "Downgrade",
+      "cancelPlan": "Plan kündigen"
+    },
+    "price": {
+      "pro": "$29",
+      "perMonth": "pro Monat"
+    }
+  },
+  "checkout": {
+    "titles": {
+      "purchase": "{productName} kaufen",
+      "updatePlan": "Plan aktualisieren",
+      "startTrial": "Testversion für {productName} starten",
+      "productScheduled": "{productName} Produkt bereits geplant",
+      "productActive": "Produkt bereits aktiv",
+      "enableProduct": "{productName} aktivieren",
+      "subscribeTo": "Zu {productName} abonnieren",
+      "renew": "Verlängern",
+      "upgradeTo": "Zu {productName} upgraden",
+      "downgradeTo": "Zu {productName} downgraden",
+      "cancel": "Kündigen",
+      "changeSubscription": "Abonnement ändern"
+    },
+    "messages": {
+      "purchase": "Durch Klicken auf Bestätigen kaufen Sie {productName} und Ihre Karte wird sofort belastet.",
+      "updatePlan": "Aktualisieren Sie Ihre vorausbezahlte Menge. Ihnen wird der anteilige Unterschied basierend auf Ihrem aktuellen Abrechnungszyklus berechnet oder gutgeschrieben.",
+      "startTrial": "Durch Klicken auf Bestätigen starten Sie eine kostenlose Testversion von {productName}, die am {nextCycleAtStr} endet.",
+      "productScheduled": "Sie befinden sich derzeit auf dem Produkt {currentProductName} und sind geplant, {productName} am {nextCycleAtStr} zu starten.",
+      "productActive": "Sie haben bereits ein Abonnement für dieses Produkt.",
+      "enableProduct": "Durch Klicken auf Bestätigen wird {productName} sofort aktiviert.",
+      "subscribeTo": "Durch Klicken auf Bestätigen werden Sie zu {productName} abonniert und Ihre Karte wird sofort belastet.",
+      "renew": "Durch Klicken auf Bestätigen verlängern Sie Ihr Abonnement zu {productName}.",
+      "upgradeTo": "Durch Klicken auf Bestätigen upgraden Sie zu {productName} und Ihre Zahlungsmethode wird sofort belastet.",
+      "downgradeTo": "Durch Klicken auf Bestätigen wird Ihr aktuelles Abonnement zu {currentProductName} gekündigt und ein neues Abonnement zu {productName} beginnt am {nextCycleAtStr}.",
+      "cancel": "Durch Klicken auf Bestätigen wird Ihr Abonnement zu {currentProductName} am {nextCycleAtStr} beendet.",
+      "changeSubscription": "Sie sind dabei, Ihr Abonnement zu ändern."
+    },
+    "buttons": {
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen",
+      "save": "Speichern"
+    },
+    "pricing": {
+      "totalDueToday": "Heute fälliger Gesamtbetrag",
+      "dueNextCycle": "Fällig im nächsten Zyklus ({nextCycleAtStr})",
+      "usagePrices": "+ Nutzungspreise",
+      "price": "Preis",
+      "viewDetails": "Details anzeigen",
+      "subscription": "Abonnement",
+      "free": "Kostenlos",
+      "quantity": "Menge:",
+      "billingMultiplier": "x"
+    }
+  },
+  "chat": {
+    "title": "Chat",
+    "startConversation": "Starte eine Konversation",
+    "send": "Senden",
+    "sending": "Wird gesendet...",
+    "insufficientCredits": "Nicht genügend Credits. Bitte kaufen Sie mehr Credits, um fortzufahren.",
+    "selectModel": "Modell auswählen",
+    "imageMode": "Bildmodus",
+    "purchaseMore": "Kaufen Sie mehr Credits",
+    "failedToSendMessage": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
+    "typeYourMessage": "Nachricht eingeben",
+    "credits": "Credits",
+    "credit": "Credit",
+    "used": "Verwendet"
   }
 }

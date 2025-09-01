@@ -50,7 +50,9 @@ export default function OnboardingForm() {
     
     // Handle successful organization creation
     if (state?.success && state?.redirect) {
-      router.push(state.redirect);
+      setTimeout(() => {
+        router.push(state.redirect as string);
+      }, 3000);
     }
   }, [state, setError, router]);  
 

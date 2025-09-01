@@ -62,7 +62,7 @@ export default function SignInForm() {
       console.log('Redirecting to:', state.redirect);
       setTimeout(() => {
         router.push(state.redirect as string);
-      }, 10000);
+      }, 3000);
     }
   }, [state, setError, router]);
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useCustomer, usePricingTable, ProductDetails } from "autumn-js/react";
+import { useCustomer, usePricingTable } from "autumn-js/react";
 import { createContext, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
@@ -11,12 +11,17 @@ import CheckoutDialog from "@/components/autumn/checkout-dialog";
 import { getPricingTableContent } from "@/lib/autumn/pricing-table-content";
 import type { Product, ProductItem } from "autumn-js";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+
 
 export default function PricingTable({
   productDetails,
 }: {
-  productDetails?: ProductDetails[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  productDetails?: any[];
 }) {
+  const t = useTranslations("pricing.table");
   const { checkout } = useCustomer();
   const [isAnnual, setIsAnnual] = useState(false);
   const { products, isLoading, error } = usePricingTable({ productDetails });
@@ -25,12 +30,13 @@ export default function PricingTable({
     return (
       <div className="flex justify-center items-center w-full h-full min-h-[300px]">
         <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" />
+        <span className="ml-2">{t("loading")}</span>
       </div>
     );
   }
 
   if (error) {
-    return <div> Something went wrong...</div>;
+    return <div>{t("error")}</div>;
   }
 
   const intervals = Array.from(
@@ -65,6 +71,7 @@ export default function PricingTable({
           isAnnualToggle={isAnnual}
           setIsAnnualToggle={setIsAnnual}
           multiInterval={multiInterval}
+          productDetails={productDetails}
         >
           {products.filter(intervalFilter).map((product, index) => (
             <PricingCard
@@ -101,11 +108,14 @@ const PricingTableContext = createContext<{
   setIsAnnualToggle: (isAnnual: boolean) => void;
   products: Product[];
   showFeatures: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  productDetails?: any[];
 }>({
   isAnnualToggle: false,
   setIsAnnualToggle: () => {},
   products: [],
   showFeatures: true,
+  productDetails: [],
 });
 
 export const usePricingTableContext = (componentName: string) => {
@@ -126,6 +136,7 @@ export const PricingTableContainer = ({
   isAnnualToggle,
   setIsAnnualToggle,
   multiInterval,
+  productDetails,
 }: {
   children?: React.ReactNode;
   products?: Product[];
@@ -134,6 +145,8 @@ export const PricingTableContainer = ({
   isAnnualToggle: boolean;
   setIsAnnualToggle: (isAnnual: boolean) => void;
   multiInterval: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  productDetails?: any[];
 }) => {
   if (!products) {
     throw new Error("products is required in <PricingTable />");
@@ -146,7 +159,7 @@ export const PricingTableContainer = ({
   const hasRecommended = products?.some((p) => p.display?.recommend_text);
   return (
     <PricingTableContext.Provider
-      value={{ isAnnualToggle, setIsAnnualToggle, products, showFeatures }}
+      value={{ isAnnualToggle, setIsAnnualToggle, products, showFeatures, productDetails }}
     >
       <div
         className={cn(
@@ -168,7 +181,7 @@ export const PricingTableContainer = ({
         )}
         <div
           className={cn(
-            "gap-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] w-full",
+            "gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mx-auto w-full max-w-6xl",
             className
           )}
         >
@@ -192,7 +205,9 @@ export const PricingCard = ({
   className,
   buttonProps,
 }: PricingCardProps) => {
-  const { products, showFeatures } = usePricingTableContext("PricingCard");
+  const t = useTranslations("pricing");
+  const tButtons = useTranslations("pricing.buttons");
+  const { products, showFeatures, productDetails } = usePricingTableContext("PricingCard");
 
   const product = products.find((p) => p.id === productId);
 
@@ -205,15 +220,89 @@ export const PricingCard = ({
   const { buttonText } = getPricingTableContent(product);
 
   const isRecommended = productDisplay?.recommend_text ? true : false;
+  
+  // Helper function to get translated text
+  const getTranslatedText = (text: string | undefined) => {
+    if (text && text.startsWith('pricing.')) {
+      try {
+        // Remove the 'pricing.' prefix to get the correct key
+        const key = text.replace('pricing.', '');
+        return t(key);
+      } catch {
+        // If translation fails, return the original text
+        return text || '';
+      }
+    }
+    return text || '';
+  };
+
+  // Get our custom product details to override Autumn.js data
+  const customProductDetails = productDetails?.find(p => p.id === product.id);
+  
+  // Merge custom content with Autumn.js data
+  const mergedItems = product.items.map((item, index) => {
+    if (customProductDetails && customProductDetails.items[index]) {
+      return {
+        ...item,
+        display: {
+          ...item.display,
+          primary_text: customProductDetails.items[index].display?.primary_text || item.display?.primary_text,
+          secondary_text: customProductDetails.items[index].display?.secondary_text || item.display?.secondary_text,
+        }
+      };
+    }
+    return item;
+  });
+
   const mainPriceDisplay = product.properties?.is_free
     ? {
-        primary_text: "Free",
+        primary_text: t("plans.free.name"),
       }
-    : product.items[0].display;
+    : {
+        primary_text: getTranslatedText(mergedItems[0].display?.primary_text),
+        secondary_text: getTranslatedText(mergedItems[0].display?.secondary_text),
+      };
 
   const featureItems = product.properties?.is_free
-    ? product.items
-    : product.items.slice(1);
+    ? mergedItems
+    : mergedItems.slice(1);
+
+  console.log('mergedItems', mergedItems);
+  console.log('featureItems', featureItems);
+
+  // Get translated text for button
+  const getButtonText = () => {
+    if (productDisplay?.button_text) {
+      return t(productDisplay.button_text);
+    }
+    if (typeof buttonText === 'string') {
+      return tButtons(buttonText.replace('pricing.buttons.', ''));
+    }
+    return buttonText;
+  };
+
+  // Get translated text for product name and description
+  const getProductName = () => {
+    if (productDisplay?.name && productDisplay.name.startsWith('pricing.')) {
+      return t(productDisplay.name);
+    }
+    return productDisplay?.name || name;
+  };
+
+  const getProductDescription = () => {
+    if (productDisplay?.description && productDisplay.description.startsWith('pricing.')) {
+      return t(productDisplay.description);
+    }
+    return productDisplay?.description;
+  };
+
+  // Get translated text for recommend text
+  const getRecommendText = () => {
+    if (productDisplay?.recommend_text && productDisplay.recommend_text.startsWith('pricing.')) {
+      return t(productDisplay.recommend_text);
+    }
+    return productDisplay?.recommend_text;
+  };
 
   return (
     <div
@@ -225,7 +314,7 @@ export const PricingCard = ({
       )}
     >
       {productDisplay?.recommend_text && (
-        <RecommendedBadge recommended={productDisplay?.recommend_text} />
+        <RecommendedBadge recommended={getRecommendText() || ''} />
       )}
       <div
         className={cn(
@@ -237,12 +326,12 @@ export const PricingCard = ({
           <div className="flex flex-col">
             <div className="pb-4">
               <h2 className="px-6 font-semibold text-2xl truncate">
-                {productDisplay?.name || name}
+                {getProductName()}
               </h2>
               {productDisplay?.description && (
                 <div className="px-6 h-8 text-muted-foreground text-sm">
                   <p className="line-clamp-2">
-                    {productDisplay?.description}
+                    {getProductDescription()}
                   </p>
                 </div>
               )}
@@ -276,7 +365,7 @@ export const PricingCard = ({
             recommended={productDisplay?.recommend_text ? true : false}
             {...buttonProps}
           >
-            {productDisplay?.button_text || buttonText}
+            {getButtonText()}
           </PricingCardButton>
         </div>
       </div>
@@ -294,11 +383,28 @@ export const PricingFeatureList = ({
   everythingFrom?: string;
   className?: string;
 }) => {
+  const t = useTranslations("pricing");
+  
+  // Get translated text for feature items
+  const getFeatureText = (text: string | undefined) => {
+    if (text && text.startsWith('pricing.')) {
+      try {
+        // Remove the 'pricing.' prefix to get the correct key
+        const key = text.replace('pricing.', '');
+        return t(key);
+      } catch {
+        // If translation fails, return the original text
+        return text || '';
+      }
+    }
+    return text || '';
+  };
+
   return (
     <div className={cn("flex-grow", className)}>
       {everythingFrom && (
         <p className="mb-4 text-sm">
-          Everything from {everythingFrom}, plus:
+          {t("everythingFrom", { plan: everythingFrom })}
         </p>
       )}
       <div className="space-y-3">
@@ -307,14 +413,11 @@ export const PricingFeatureList = ({
             key={index}
             className="flex items-start gap-2 text-sm"
           >
-            {/* {showIcon && (
-              <Check className="flex-shrink-0 mt-0.5 w-4 h-4 text-primary" />
-            )} */}
             <div className="flex flex-col">
-              <span>{item.display?.primary_text}</span>
+              <span>{getFeatureText(item.display?.primary_text) || ''}</span>
               {item.display?.secondary_text && (
                 <span className="text-muted-foreground text-sm">
-                  {item.display?.secondary_text}
+                  {getFeatureText(item.display?.secondary_text) || ''}
                 </span>
               )}
             </div>
@@ -387,15 +490,17 @@ export const AnnualSwitch = ({
   isAnnualToggle: boolean;
   setIsAnnualToggle: (isAnnual: boolean) => void;
 }) => {
+  const t = useTranslations("pricing.table");
+  
   return (
     <div className="flex items-center space-x-2 mb-4">
-      <span className="text-muted-foreground text-sm">Monthly</span>
+      <span className="text-muted-foreground text-sm">{t("monthly")}</span>
       <Switch
         id="annual-billing"
         checked={isAnnualToggle}
         onCheckedChange={setIsAnnualToggle}
       />
-      <span className="text-muted-foreground text-sm">Annual</span>
+      <span className="text-muted-foreground text-sm">{t("annual")}</span>
     </div>
   );
 };

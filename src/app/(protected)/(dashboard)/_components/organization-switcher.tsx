@@ -21,30 +21,29 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { SubscriptionBadge } from "@/components/autumn/subscription-badge"
+import { AutumnWrapper } from "../../_components/autumn-wrapper"
+import { memo } from "react"
+import { useTranslations } from "next-intl"
 
 interface Organization {
   id: string
   name: string
-  iconName: string
+  iconName?: string
   role: string
   active: boolean
 }
 
-interface IconMap {
-  [key: string]: React.ComponentType<{ className?: string }>
-}
+
 
 export function OrganizationSwitcher({
   organizations,
-  iconMap,
 }: {
   organizations: Organization[]
-  iconMap: IconMap
 }) {
   const { isMobile } = useSidebar()
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
-
+  const t = useTranslations("components.OrganizationSwitcher")
   // Find the active organization from the props
   const activeOrganization = organizations.find(org => org.active) || organizations[0]
 
@@ -69,7 +68,7 @@ export function OrganizationSwitcher({
     }
   }
 
-  const ActiveIcon = iconMap[activeOrganization.iconName] || iconMap.Building2
+
 
   return (
     <SidebarMenu>
@@ -82,11 +81,15 @@ export function OrganizationSwitcher({
               disabled={isLoading}
             >
               <div className="flex justify-center items-center bg-sidebar-primary rounded-lg size-8 aspect-square text-sidebar-primary-foreground">
-                <ActiveIcon className="size-4" />
+                <div className="">{activeOrganization.name[0].toUpperCase() + activeOrganization.name[1].toUpperCase()}</div>
               </div>
               <div className="flex-1 grid text-sm text-left leading-tight">
                 <span className="font-medium truncate">{activeOrganization.name}</span>
-                <span className="text-xs truncate"><SubscriptionBadge variant="text" /></span>
+                <span className="text-xs truncate">
+                  <AutumnWrapper loadingVariant="none">
+                    <SubscriptionBadge variant="text" />
+                  </AutumnWrapper>
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -98,10 +101,9 @@ export function OrganizationSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Organizations
+              {t("organizations")}
             </DropdownMenuLabel>
             {organizations.map((organization, index) => {
-              const Icon = iconMap[organization.iconName] || iconMap.Building2
               return (
                 <DropdownMenuItem
                   key={organization.id}
@@ -109,8 +111,8 @@ export function OrganizationSwitcher({
                   className={`gap-2 p-2 ${organization.active ? 'bg-accent' : ''} cursor-pointer`}
                   disabled={isLoading}
                 >
-                  <div className="flex justify-center items-center border rounded-md size-6">
-                    <Icon className="size-3.5 shrink-0" />
+                  <div className="flex justify-center items-center bg-sidebar-primary rounded-md size-6 aspect-square text-sidebar-primary-foreground">
+                    <div className="">{organization.name[0].toUpperCase() + organization.name[1].toUpperCase()}</div>
                   </div>
                   <div className="flex-1">
                     <span className={organization.active ? 'font-medium' : ''}>
@@ -118,7 +120,7 @@ export function OrganizationSwitcher({
                     </span>
                     {organization.active && (
                       <span className="block text-muted-foreground text-xs">
-                        Current
+                        {t("current")}
                       </span>
                     )}
                   </div>
@@ -142,3 +144,5 @@ export function OrganizationSwitcher({
     </SidebarMenu>
   )
 }
+
+export const MemoizedOrganizationSwitcher = memo(OrganizationSwitcher);

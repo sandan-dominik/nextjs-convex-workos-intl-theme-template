@@ -6,61 +6,61 @@ export const getPricingTableContent = (product: Product) => {
 
   if (has_trial) {
     return {
-      buttonText: <p>Start Free Trial</p>,
+      buttonText: "pricing.buttons.startFreeTrial",
     };
   }
 
   switch (scenario) {
     case "scheduled":
       return {
-        buttonText: <p>Plan Scheduled</p>,
+        buttonText: "pricing.buttons.planScheduled",
       };
 
     case "active":
       if (updateable) {
         return {
-          buttonText: <p>Update Plan</p>,
+          buttonText: "pricing.buttons.updatePlan",
         };
       }
 
       return {
-        buttonText: <p>Current Plan</p>,
+        buttonText: "pricing.buttons.currentPlan",
       };
 
     case "new":
       if (is_one_off) {
         return {
-          buttonText: <p>Purchase</p>,
+          buttonText: "pricing.buttons.purchase",
         };
       }
 
       return {
-        buttonText: <p>Get started</p>,
+        buttonText: "pricing.buttons.getStarted",
       };
 
     case "renew":
       return {
-        buttonText: <p>Renew</p>,
+        buttonText: "pricing.buttons.renew",
       };
 
     case "upgrade":
       return {
-        buttonText: <p>Upgrade</p>,
+        buttonText: "pricing.buttons.upgrade",
       };
 
     case "downgrade":
       return {
-        buttonText: <p>Downgrade</p>,
+        buttonText: "pricing.buttons.downgrade",
       };
 
     case "cancel":
       return {
-        buttonText: <p>Cancel Plan</p>,
+        buttonText: "pricing.buttons.cancelPlan",
       };
 
     default:
       return {
-        buttonText: <p>Get Started</p>,
+        buttonText: "pricing.buttons.getStarted",
       };
   }
 };
@@ -72,11 +72,11 @@ export const productDetails = [
     id: "free", 
     display: {
       // 'name' and 'description' will be shown on the pricing card.
-      name: "Free",
-      description: "For individuals and small projects just getting started.",
+      name: "pricing.plans.free.name",
+      description: "pricing.plans.free.description",
       
       // This text appears as the main button text.
-      button_text: "Get Started", 
+      button_text: "pricing.plans.free.buttonText", 
     },
     // 'items' lets you define exactly what feature text to show.
     items: [
@@ -84,14 +84,14 @@ export const productDetails = [
         // This 'feature_id' must match the feature 'id' in autumn.config.ts
         feature_id: "seats", 
         display: {
-          primary_text: "1 user seat included",
+          primary_text: "pricing.features.seats.free",
         },
       },
       {
         feature_id: "credits",
         display: {
-          primary_text: "10 credits per month",
-          secondary_text: "For sending messages and other actions.",
+          primary_text: "pricing.features.credits.free",
+          secondary_text: "pricing.features.credits.freeDescription",
         },
       },
       {
@@ -99,7 +99,7 @@ export const productDetails = [
         // Use a unique 'feature_id' for these.
         feature_id: "support_tier_free", 
         display: {
-          primary_text: "Community support",
+          primary_text: "pricing.features.support.free",
         },
       },
     ],
@@ -109,42 +109,42 @@ export const productDetails = [
   {
     id: "pro",
     display: {
-      name: "Pro",
-      description: "For growing teams that need more power and collaboration.",
+      name: "pricing.plans.pro.name",
+      description: "pricing.plans.pro.description",
       
       // This makes the Pro card stand out, as seen in your component code.
-      recommend_text: "Most Popular", 
+      recommend_text: "pricing.table.recommended", 
       
       // The default button text will be "Upgrade" or "Manage", 
       // but you can override it here if needed.
-      // button_text: "Upgrade to Pro", 
+      // button_text: "pricing.plans.pro.buttonText", 
     },
     items: [
       {
         // This is the base price item. The text here will override what Autumn sends.
         // The 'id' for price items is auto-generated, so we don't specify it.
         display: {
-          primary_text: "$29",
-          secondary_text: "per month",
+          primary_text: "pricing.price.pro",
+          secondary_text: "pricing.price.perMonth",
         },
       },
       {
         feature_id: "seats",
         display: {
-          primary_text: "3 user seats included",
-          secondary_text: "$10/month for each additional seat.",
+          primary_text: "pricing.features.seats.pro",
+          secondary_text: "pricing.features.seats.additionalSeat",
         },
       },
       {
         feature_id: "credits",
         display: {
-          primary_text: "500 credits per month",
+          primary_text: "pricing.features.credits.pro",
         },
       },
       {
         feature_id: "support_tier_pro",
         display: {
-          primary_text: "Email & priority support",
+          primary_text: "pricing.features.support.pro",
         },
       },
     ],

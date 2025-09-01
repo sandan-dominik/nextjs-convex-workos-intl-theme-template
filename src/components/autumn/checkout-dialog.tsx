@@ -24,6 +24,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
 export interface CheckoutDialogProps {
   open: boolean;
@@ -45,6 +46,7 @@ const formatCurrency = ({
 };
 
 export default function CheckoutDialog(params: CheckoutDialogProps) {
+  const t = useTranslations("checkout");
   const { attach } = useCustomer();
   const [checkoutResult, setCheckoutResult] = useState<
     CheckoutResult | undefined
@@ -63,17 +65,41 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
   }
 
   const { open, setOpen } = params;
-  const { title, message } = getCheckoutContent(checkoutResult);
+  const checkoutContent = getCheckoutContent(checkoutResult);
 
   const isFree = checkoutResult?.product.properties?.is_free;
   const isPaid = isFree === false;
 
+  // Get translated title and message
+  const getTitle = () => {
+    if (typeof checkoutContent.title === 'string') {
+      return t(checkoutContent.title, checkoutContent.titleParams || {});
+    }
+    return checkoutContent.title;
+  };
+
+  const getMessage = () => {
+    if (typeof checkoutContent.message === 'string') {
+      // Filter out undefined values and cast to correct type
+      const filteredParams = checkoutContent.messageParams 
+        ? Object.fromEntries(
+            Object.entries(checkoutContent.messageParams)
+              .filter(([, value]) => value !== undefined)
+              .map(([key, value]) => [key, value as string | number | Date])
+          )
+        : {};
+      
+      return t(checkoutContent.message, filteredParams);
+    }
+    return checkoutContent.message;
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="gap-0 p-0 pt-4 overflow-hidden text-foreground text-sm">
-        <DialogTitle className="mb-1 px-6">{title}</DialogTitle>
+        <DialogTitle className="mb-1 px-6">{getTitle()}</DialogTitle>
         <div className="mt-1 mb-4 px-6 text-muted-foreground">
-          {message}
+          {getMessage()}
         </div>
 
         {isPaid && checkoutResult && (
@@ -111,7 +137,7 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
             ) : (
               <>
                 <span className="flex gap-1 whitespace-nowrap">
-                  Confirm
+                  {t("buttons.confirm")}
                 </span>
               </>
             )}
@@ -148,6 +174,7 @@ function PriceInformation({
 
 function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
   const { next_cycle, product } = checkoutResult;
+  const t = useTranslations("checkout");
   const nextCycleAtStr = next_cycle
     ? new Date(next_cycle.starts_at).toLocaleDateString()
     : undefined;
@@ -162,7 +189,7 @@ function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
     <div className="flex flex-col gap-1">
       <div className="flex justify-between">
         <div>
-          <p className="font-medium text-md">Total due today</p>
+          <p className="font-medium text-md">{t("pricing.totalDueToday")}</p>
         </div>
 
         <p className="font-medium text-md">
@@ -175,14 +202,14 @@ function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
       {showNextCycle && (
         <div className="flex justify-between text-muted-foreground">
           <div>
-            <p className="text-md">Due next cycle ({nextCycleAtStr})</p>
+            <p className="text-md">{t("pricing.dueNextCycle", { nextCycleAtStr: nextCycleAtStr || "" })}</p>
           </div>
           <p className="text-md">
             {formatCurrency({
               amount: next_cycle.total,
               currency: checkoutResult?.currency,
             })}
-            {hasUsagePrice && <span> + usage prices</span>}
+            {hasUsagePrice && <span> {t("pricing.usagePrices")}</span>}
           </p>
         </div>
       )}
@@ -197,12 +224,13 @@ function ProductItems({
   checkoutResult: CheckoutResult;
   setCheckoutResult: (checkoutResult: CheckoutResult) => void;
 }) {
+  const t = useTranslations("checkout");
   const isUpdateQuantity =
     checkoutResult?.product.scenario === "active" &&
     checkoutResult.product.properties.updateable;
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-medium text-sm">Price</p>
+      <p className="font-medium text-sm">{t("pricing.price")}</p>
       {checkoutResult?.product.items
         .filter((item) => item.type !== "feature")
         .map((item, index) => {
@@ -224,7 +252,7 @@ function ProductItems({
           return (
             <div key={index} className="flex justify-between">
               <p className="text-muted-foreground">
-                {item.feature ? item.feature.name : "Subscription"}
+                {item.feature ? item.feature.name : t("pricing.subscription")}
               </p>
               <p>
                 {item.display?.primary_text} {item.display?.secondary_text}
@@ -237,13 +265,14 @@ function ProductItems({
 }
 
 function CheckoutLines({ checkoutResult }: { checkoutResult: CheckoutResult }) {
+  const t = useTranslations("checkout");
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="total" className="border-b-0">
         <CustomAccordionTrigger className="justify-between my-0 py-0 border-none w-full">
           <div className="flex justify-end items-center gap-1 w-full cursor-pointer">
             <p className="font-light text-muted-foreground">
-              View details
+              {t("pricing.viewDetails")}
             </p>
             <ChevronDown
               className="mt-0.5 text-muted-foreground rotate-90 transition-transform duration-200 ease-in-out"
@@ -303,6 +332,7 @@ const PrepaidItem = ({
   checkoutResult: CheckoutResult;
   setCheckoutResult: (checkoutResult: CheckoutResult) => void;
 }) => {
+  const t = useTranslations("checkout");
   const { quantity = 0, billing_units: billingUnits = 1 } = item;
   const [quantityInput, setQuantityInput] = useState<string>(
     (quantity / billingUnits).toString()
@@ -363,7 +393,7 @@ const PrepaidItem = ({
             )}
             disabled={disableSelection}
           >
-            Qty: {quantity}
+            {t("pricing.quantity")} {quantity}
             <ChevronDown size={12} />
           </PopoverTrigger>
           <PopoverContent
@@ -385,7 +415,7 @@ const PrepaidItem = ({
                   onChange={(e) => setQuantityInput(e.target.value)}
                 />
                 <p className="text-muted-foreground">
-                  {billingUnits > 1 && `x ${billingUnits} `}
+                  {billingUnits > 1 && `${t("pricing.billingMultiplier")} ${billingUnits} `}
                   {item.feature?.name}
                 </p>
               </div>
@@ -398,7 +428,7 @@ const PrepaidItem = ({
                 {loading ? (
                   <Loader2 className="!w-4 !h-4 text-muted-foreground animate-spin" />
                 ) : (
-                  "Save"
+                  t("buttons.save")
                 )}
               </Button>
             </div>

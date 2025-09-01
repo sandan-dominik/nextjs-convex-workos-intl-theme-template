@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { generateOAuthUrl } from "@/app/actions/auth";
+import { generateOAuthUrl } from "@/lib/api-client";
 import { Loader2 } from "lucide-react";
 
 interface OAuthButtonProps {

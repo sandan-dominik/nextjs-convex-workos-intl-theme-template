@@ -49,7 +49,7 @@ export default async function DashboardPage() {
               <div className="flex-1 space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Organization Details<SubscriptionBadge className="ml-2" /></CardTitle>
+                    <CardTitle>Organization Details <SubscriptionBadge className="ml-2" /></CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2 text-sm">
                     <p className="flex justify-between">

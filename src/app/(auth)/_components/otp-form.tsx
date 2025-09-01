@@ -47,7 +47,7 @@ export default function OTPForm() {
   }
 
   return (
-    <Card className="w-full md:w-[350px]">
+    <Card className="mx-auto w-full md:w-[350px]">
       <CardHeader>
         <CardTitle>{t("title")}</CardTitle>
       </CardHeader>

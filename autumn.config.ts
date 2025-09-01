@@ -14,19 +14,19 @@ export const seats = feature({
 	type: "continuous_use",
 });
 
-export const credits = feature({
-	id: "credits",
-	name: "Credits",
-	type: "single_use",
-});
-
 export const messages = feature({
 	id: "messages",
 	name: "Messages",
+	type: "single_use",
+});
+
+export const credits = feature({
+	id: "credits",
+	name: "Credits",
 	type: "credit_system",
 	credit_schema: [
 		{
-			metered_feature_id: credits.id,
+			metered_feature_id: messages.id,
 			credit_cost: 1,
 		},
 	],

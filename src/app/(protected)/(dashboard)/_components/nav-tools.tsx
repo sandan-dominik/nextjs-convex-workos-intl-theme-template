@@ -21,7 +21,7 @@ import {
 import Link from "next/link"
 import { useTranslations } from "next-intl"
 
-export function NavMain({
+export function NavTools({
   items,
 }: {
   items: {
@@ -36,10 +36,10 @@ export function NavMain({
   }[]
 }) {
   const pathname = usePathname()
-  const t = useTranslations("navigation") 
+  const t = useTranslations("navigation")
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{t("platform")}</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("tools.title")}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
           // If item has no children, render as a simple link

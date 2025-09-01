@@ -13,130 +13,96 @@ export const getCheckoutContent = (checkoutResult: CheckoutResult) => {
 
   if (is_one_off) {
     return {
-      title: <p>Purchase {productName}</p>,
-      message: (
-        <p>
-          By clicking confirm, you will purchase {productName} and your card
-          will be charged immediately.
-        </p>
-      ),
+      title: "checkout.titles.purchase",
+      titleParams: { productName },
+      message: "checkout.messages.purchase",
+      messageParams: { productName },
     };
   }
 
   if (scenario == "active" && updateable) {
     if (updateable) {
       return {
-        title: <p>Update Plan</p>,
-        message: (
-          <p>
-            Update your prepaid quantity. You&apos;ll be charged or credited the
-            prorated difference based on your current billing cycle.
-          </p>
-        ),
+        title: "checkout.titles.updatePlan",
+        message: "checkout.messages.updatePlan",
       };
     }
   }
 
   if (has_trial) {
     return {
-      title: <p>Start trial for {productName}</p>,
-      message: (
-        <p>
-          By clicking confirm, you will start a free trial of {productName}{" "}
-          which ends on {nextCycleAtStr}.
-        </p>
-      ),
+      title: "checkout.titles.startTrial",
+      titleParams: { productName },
+      message: "checkout.messages.startTrial",
+      messageParams: { productName, nextCycleAtStr },
     };
   }
 
   switch (scenario) {
     case "scheduled":
       return {
-        title: <p>{productName} product already scheduled</p>,
-        message: (
-          <p>
-            You are currently on product {current_product.name} and are
-            scheduled to start {productName} on {nextCycleAtStr}.
-          </p>
-        ),
+        title: "checkout.titles.productScheduled",
+        titleParams: { productName },
+        message: "checkout.messages.productScheduled",
+        messageParams: { productName, currentProductName: current_product.name, nextCycleAtStr },
       };
 
     case "active":
       return {
-        title: <p>Product already active</p>,
-        message: <p>You are already subscribed to this product.</p>,
+        title: "checkout.titles.productActive",
+        message: "checkout.messages.productActive",
       };
 
     case "new":
       if (is_free) {
         return {
-          title: <p>Enable {productName}</p>,
-          message: (
-            <p>
-              By clicking confirm, {productName} will be enabled immediately.
-            </p>
-          ),
+          title: "checkout.titles.enableProduct",
+          titleParams: { productName },
+          message: "checkout.messages.enableProduct",
+          messageParams: { productName },
         };
       }
 
       return {
-        title: <p>Subscribe to {productName}</p>,
-        message: (
-          <p>
-            By clicking confirm, you will be subscribed to {productName} and
-            your card will be charged immediately.
-          </p>
-        ),
+        title: "checkout.titles.subscribeTo",
+        titleParams: { productName },
+        message: "checkout.messages.subscribeTo",
+        messageParams: { productName },
       };
     case "renew":
       return {
-        title: <p>Renew</p>,
-        message: (
-          <p>
-            By clicking confirm, you will renew your subscription to{" "}
-            {productName}.
-          </p>
-        ),
+        title: "checkout.titles.renew",
+        message: "checkout.messages.renew",
+        messageParams: { productName },
       };
 
     case "upgrade":
       return {
-        title: <p>Upgrade to {productName}</p>,
-        message: (
-          <p>
-            By clicking confirm, you will upgrade to {productName} and your
-            payment method will be charged immediately.
-          </p>
-        ),
+        title: "checkout.titles.upgradeTo",
+        titleParams: { productName },
+        message: "checkout.messages.upgradeTo",
+        messageParams: { productName },
       };
 
     case "downgrade":
       return {
-        title: <p>Downgrade to {productName}</p>,
-        message: (
-          <p>
-            By clicking confirm, your current subscription to{" "}
-            {current_product.name} will be cancelled and a new subscription to{" "}
-            {productName} will begin on {nextCycleAtStr}.
-          </p>
-        ),
+        title: "checkout.titles.downgradeTo",
+        titleParams: { productName },
+        message: "checkout.messages.downgradeTo",
+        messageParams: { productName, currentProductName: current_product.name, nextCycleAtStr },
       };
 
     case "cancel":
       return {
-        title: <p>Cancel</p>,
-        message: (
-          <p>
-            By clicking confirm, your subscription to {current_product.name}{" "}
-            will end on {nextCycleAtStr}.
-          </p>
-        ),
+        title: "checkout.titles.cancel",
+        message: "checkout.messages.cancel",
+        messageParams: { currentProductName: current_product.name, nextCycleAtStr },
       };
 
     default:
       return {
-        title: <p>Change Subscription</p>,
-        message: <p>You are about to change your subscription.</p>,
+        title: "checkout.titles.changeSubscription",
+        message: "checkout.messages.changeSubscription",
       };
   }
 };
