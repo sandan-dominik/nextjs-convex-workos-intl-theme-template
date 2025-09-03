@@ -38,8 +38,18 @@ export function CustomerSync() {
 
   useEffect(() => {
     const transformedCustomer = transformAutumnCustomer(customer);
-    setCustomer(transformedCustomer);
-  }, [customer, setCustomer]);
+    
+    // Only update customer if we have valid data from Autumn
+    // This prevents overwriting existing customer data with null during loading
+    if (transformedCustomer && transformedCustomer.products && transformedCustomer.products.length > 0) {
+      setCustomer(transformedCustomer);
+    } else if (customerLoading === false && customer === null) {
+      // Only clear customer data if we're not loading and Autumn explicitly returns null
+      // This handles the case where user truly has no subscription
+      setCustomer(null);
+    }
+    // Important: We don't call setCustomer(null) during loading states
+  }, [customer, setCustomer, customerLoading]);
 
   useEffect(() => {
     setCustomerError(customerError);

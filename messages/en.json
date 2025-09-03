@@ -24,7 +24,9 @@
       "next-intl": "Next Intl integrated + Language Switcher",
       "next-themes": "Next Theme (Dark/light) integrated + Toggle",
       "workos": "WorkOS Auth integrated",
-      "convex": "Convex integrated"
+      "convex": "Convex integrated",
+      "zustand": "Zustand state management integrated",
+      "autumn": "Autumn subscription management integrated"
     }
   },
   "SignInPage": {
@@ -86,7 +88,18 @@
       "placeholder": "Enter your organization name"
     },
     "createOrganization": "Create organization",
-    "creating": "Creating..."
+    "creating": "Creating...",
+    "initializing": "Initializing Workspace",
+    "initializingDescription": "Setting up your new organization...",
+    "steps": {
+      "verifyingAuth": "Verifying authentication",
+      "loadingOrg": "Loading organization data",
+      "syncingStore": "Syncing to local store",
+      "preparingWorkspace": "Preparing workspace"
+    },
+    "workspaceReady": "Workspace ready! Redirecting to subscription...",
+    "initializationFailed": "Initialization Failed",
+    "retry": "Retry"
   },
   "DashboardPage": {
     "title": "Dashboard",

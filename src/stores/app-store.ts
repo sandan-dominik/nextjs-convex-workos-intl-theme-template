@@ -102,11 +102,13 @@ export const useAppStore = create<AppState>()(
       }),
       {
         name: 'app-store',
-        // Only persist user and organization data, not loading states
+        // Persist user, organization, and customer data
         partialize: (state) => ({
           user: state.user,
           organizationId: state.organizationId,
           organizations: state.organizations,
+          customer: state.customer,
+          activeProduct: state.activeProduct,
         }),
       }
     ),

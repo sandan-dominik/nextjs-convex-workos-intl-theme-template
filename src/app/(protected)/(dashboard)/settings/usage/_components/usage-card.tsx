@@ -1,7 +1,7 @@
 "use client";
 
 import { useCustomer } from "autumn-js/react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, CreditCard, AlertCircle } from "lucide-react";
@@ -20,20 +20,32 @@ export function UsageComponent() {
   const [usageData, setUsageData] = useState<UsageData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
+  const [isMounted, setIsMounted] = useState(true);
   const t = useTranslations("SettingsPage");
+
+
+
+  // Use refs to store stable references to avoid infinite loops
+  const customerRef = useRef(customer);
+  const checkRef = useRef(check);
+  
+  // Update refs when values change
+  useEffect(() => {
+    customerRef.current = customer;
+    checkRef.current = check;
+  }, [customer, check]);
 
   const fetchUsageData = useCallback(async () => {
     try {
       setIsLoading(true);
       
       // Wait for customer to be available
-      if (!customer) {
-        console.log('Customer not ready yet, waiting...');
+      if (!customerRef.current) {
+        setIsLoading(false);
         return;
       }
 
-      const { data } = check({ featureId: "credits" });
-      console.log('Autumn usage data:', data);
+      const { data } = checkRef.current({ featureId: "credits" });
       
       if (data && data.included_usage !== undefined) {
         const availableCredits = data.included_usage;
@@ -55,9 +67,11 @@ export function UsageComponent() {
       console.error('Error fetching usage data:', err);
       setRetryCount(prev => prev + 1);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
-  }, [customer, check]);
+  }, []); // Empty dependency array - stable function reference
 
   // Wait for customer to be ready before fetching
   useEffect(() => {
@@ -69,19 +83,27 @@ export function UsageComponent() {
       
       return () => clearTimeout(timer);
     }
-  }, [customer, customerLoading, fetchUsageData]);
+  }, [customer, customerLoading]); // Removed fetchUsageData dependency to prevent infinite loops
 
-  // Auto-retry if we get no data
+  // Auto-retry if we get no data (limited to 3 attempts)
   useEffect(() => {
-    if (!isLoading && !usageData && retryCount < 3) {
+    if (!isLoading && !usageData && retryCount < 3 && customer && isMounted) {
       const timer = setTimeout(() => {
-        console.log(`Retrying usage data fetch (${retryCount + 1}/3)...`);
-        fetchUsageData();
+        if (isMounted) {
+          fetchUsageData();
+        }
       }, 2000 * (retryCount + 1)); // Increasing delay: 2s, 4s, 6s
       
       return () => clearTimeout(timer);
     }
-  }, [isLoading, usageData, retryCount, fetchUsageData]);
+  }, [isLoading, usageData, retryCount, customer, isMounted]); // Removed fetchUsageData dependency to prevent infinite loops
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
 
   return (
     <Card>
@@ -96,8 +118,9 @@ export function UsageComponent() {
             <Button
               variant="outline"
               size="sm"
-              onClick={fetchUsageData}
+              onClick={() => fetchUsageData()}
               disabled={isLoading || customerLoading}
+              className="cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
               {t("refresh")}

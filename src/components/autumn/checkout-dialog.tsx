@@ -25,11 +25,14 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useRefreshCustomer } from "@/hooks/use-app-store";
 
 export interface CheckoutDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   checkoutResult: CheckoutResult;
+  redirectTo?: string;
 }
 
 const formatCurrency = ({
@@ -48,6 +51,8 @@ const formatCurrency = ({
 export default function CheckoutDialog(params: CheckoutDialogProps) {
   const t = useTranslations("checkout");
   const { attach } = useCustomer();
+  const router = useRouter();
+  const refreshCustomer = useRefreshCustomer();
   const [checkoutResult, setCheckoutResult] = useState<
     CheckoutResult | undefined
   >(params?.checkoutResult);
@@ -106,6 +111,7 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
           <PriceInformation
             checkoutResult={checkoutResult}
             setCheckoutResult={setCheckoutResult}
+            redirectTo={params.redirectTo}
           />
         )}
 
@@ -122,12 +128,28 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
                 };
               });
 
-              await attach({
-                productId: checkoutResult.product.id,
-                options,
-              });
-              setOpen(false);
-              setLoading(false);
+              try {
+                await attach({
+                  productId: checkoutResult.product.id,
+                  options,
+                });
+                
+                // Close dialog first
+                setOpen(false);
+                
+                // Refresh customer data to ensure activeProduct is updated
+                refreshCustomer();
+                
+                // Add a small delay to allow customer data to update
+                setTimeout(() => {
+                  const redirectPath = params.redirectTo || '/dashboard';
+                  router.push(redirectPath);
+                }, 1000);
+              } catch (error) {
+                console.error('Error attaching product:', error);
+              } finally {
+                setLoading(false);
+              }
             }}
             disabled={loading}
             className="flex items-center gap-2 min-w-16"
@@ -151,15 +173,18 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
 function PriceInformation({
   checkoutResult,
   setCheckoutResult,
+  redirectTo,
 }: {
   checkoutResult: CheckoutResult;
   setCheckoutResult: (checkoutResult: CheckoutResult) => void;
+  redirectTo?: string;
 }) {
   return (
     <div className="flex flex-col gap-4 mb-4 px-6">
       <ProductItems
         checkoutResult={checkoutResult}
         setCheckoutResult={setCheckoutResult}
+        redirectTo={redirectTo}
       />
 
       <div className="flex flex-col gap-2">
@@ -220,9 +245,11 @@ function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
 function ProductItems({
   checkoutResult,
   setCheckoutResult,
+  redirectTo,
 }: {
   checkoutResult: CheckoutResult;
   setCheckoutResult: (checkoutResult: CheckoutResult) => void;
+  redirectTo?: string;
 }) {
   const t = useTranslations("checkout");
   const isUpdateQuantity =
@@ -241,6 +268,7 @@ function ProductItems({
                 item={item}
                 checkoutResult={checkoutResult!}
                 setCheckoutResult={setCheckoutResult}
+                redirectTo={redirectTo}
               />
             );
           }
@@ -327,12 +355,16 @@ const PrepaidItem = ({
   item,
   checkoutResult,
   setCheckoutResult,
+  redirectTo,
 }: {
   item: ProductItem;
   checkoutResult: CheckoutResult;
   setCheckoutResult: (checkoutResult: CheckoutResult) => void;
+  redirectTo?: string;
 }) => {
   const t = useTranslations("checkout");
+  const router = useRouter();
+  const refreshCustomer = useRefreshCustomer();
   const { quantity = 0, billing_units: billingUnits = 1 } = item;
   const [quantityInput, setQuantityInput] = useState<string>(
     (quantity / billingUnits).toString()
@@ -369,12 +401,25 @@ const PrepaidItem = ({
         console.error(error);
         return;
       }
+      
+      // Update checkout result
       setCheckoutResult(data!);
+      
+      // Close dialog and redirect
+      setOpen(false);
+      
+      // Refresh customer data to ensure activeProduct is updated
+      refreshCustomer();
+      
+      // Add a small delay to allow customer data to update
+      setTimeout(() => {
+        const redirectPath = redirectTo || '/dashboard';
+        router.push(redirectPath);
+      }, 1000);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-      setOpen(false);
     }
   };
 

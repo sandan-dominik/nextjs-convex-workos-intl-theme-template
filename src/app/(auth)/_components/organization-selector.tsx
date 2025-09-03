@@ -149,7 +149,7 @@ export default function OrganizationSelector({ pendingToken, availableOrganizati
           <CardTitle className="text-xl">{t("loadingOrganizations")}</CardTitle>
         </CardHeader>
         <CardContent className="py-8 text-center">
-          <Loader2 className="mx-auto mb-4 w-8 h-8 animate-spin" />
+          <Loader2 className="mx-auto mb-4 w-4 h-4 animate-spin" />
           <p>{t("pleaseWait")}</p>
         </CardContent>
       </Card>

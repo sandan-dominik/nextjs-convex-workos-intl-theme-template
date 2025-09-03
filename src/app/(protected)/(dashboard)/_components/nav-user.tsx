@@ -35,7 +35,7 @@ export function NavUser() {
   const activeProduct = useActiveProduct()
   
   // Check if user has an active pro subscription
-  const hasProSubscription = activeProduct && activeProduct.status === "active"
+  const hasProSubscription = activeProduct && activeProduct.status === "active" && activeProduct.id === "pro"
 
   // Don't render until user is loaded
   if (!user) {
@@ -93,9 +93,9 @@ export function NavUser() {
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem>
-                  <Link href="/dashboard/subscription">  
-                  <Sparkles className="mr-2" />
-                  Upgrade to Pro
+                  <Link href="/settings/subscription" className="flex w-full">  
+                    <Sparkles className="mr-2" />
+                    Upgrade to Pro
                   </Link>
                 </DropdownMenuItem>
               )}

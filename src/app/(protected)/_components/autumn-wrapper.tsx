@@ -62,7 +62,7 @@ export function Unauthenticated({ children }: { children: ReactNode }) {
       <div className="flex flex-col justify-center items-center p-4 w-full h-screen min-h-[300px] text-center">
         <Loader2 className="mb-2 w-4 h-4 animate-spin" />
         <p className="text-muted-foreground text-sm">
-          Reconnecting... ({retryCount + 1}/3)
+          Reconnecting...
         </p>
       </div>
     );
@@ -88,7 +88,7 @@ export function AuthLoading({ children }: { children: ReactNode }) {
 export function AutumnWrapper({ 
   children, 
   loadingVariant = 'default', 
-  loaderSize = "w-8 h-8 animate-spin",
+  loaderSize = "w-4 h-4 animate-spin",
   loadingComponent 
 }: { 
   children: React.ReactNode, 
@@ -97,7 +97,7 @@ export function AutumnWrapper({
   loadingComponent?: React.ReactNode
 }) {
   const convex = useConvex();
-  const organizationId = useOrganizationId();
+  const organizationId = useOrganizationId();;
 
   // Only initialize Autumn if user has an organization
   const shouldInitializeAutumn = !!organizationId;

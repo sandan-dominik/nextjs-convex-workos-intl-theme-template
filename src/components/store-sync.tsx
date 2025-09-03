@@ -38,25 +38,42 @@ export function StoreSync() {
     setOrganizationId(organizationId || null);
   }, [organizationId, setOrganizationId]);
 
-  // Fetch organizations when authenticated
+  // Fetch organizations when authenticated - with retry logic
   useEffect(() => {
     if (isAuthenticated) {
       const fetchOrganizations = async () => {
         try {
+          console.log('🔄 Fetching organizations...');
           const result = await getUserOrganizations();
+          console.log('📋 Organizations result:', result);
+          
           if (result.success && result.organizations) {
+            console.log('✅ Setting organizations in store:', result.organizations);
             setOrganizations(result.organizations);
+            
+            // If we have organizations but no current organizationId, set the first one
+            if (result.organizations.length > 0 && !organizationId) {
+              console.log('🎯 Setting first organization as current:', result.organizations[0].id);
+              setOrganizationId(result.organizations[0].id);
+            }
           }
         } catch (error) {
-          console.error('Failed to fetch organizations:', error);
+          console.error('❌ Failed to fetch organizations:', error);
         }
       };
 
       fetchOrganizations();
+      
+      // Retry after a short delay to catch any race conditions
+      const retryTimer = setTimeout(() => {
+        console.log('🔄 Retrying organization fetch...');
+        fetchOrganizations();
+      }, 1000);
+      return () => clearTimeout(retryTimer);
     } else {
       setOrganizations([]);
     }
-  }, [isAuthenticated, setOrganizations]);
+  }, [isAuthenticated, setOrganizations, organizationId, setOrganizationId]);
 
   return null; // This component doesn't render anything
 }

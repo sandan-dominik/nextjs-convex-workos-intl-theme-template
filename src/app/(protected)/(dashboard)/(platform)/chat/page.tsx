@@ -186,7 +186,7 @@ export default function ChatPage() {
             </Badge>
             {usageData && (
               <Badge variant="outline" className="text-sm">
-                {usageData.usagePercentage.toFixed(1)}% {t("used")}
+                {usageData.availableCredits === 0 ? '100' : Math.round((1 - (usageData.remainingCredits / usageData.availableCredits)) * 100)}% {t("used")}
               </Badge>
             )}
           </div>
@@ -195,7 +195,7 @@ export default function ChatPage() {
             <Alert className="w-auto">
               <AlertCircle className="w-4 h-4" />
               <AlertDescription>
-                {t("insufficientCredits")} <a href="/dashboard/subscription" className="underline">{t("purchaseMore")}</a>
+                {t("insufficientCredits")} <a href="/settings/subscription" className="underline">{t("purchaseMore")}</a>
               </AlertDescription>
             </Alert>
           )}

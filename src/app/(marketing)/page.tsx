@@ -7,7 +7,7 @@ import TaskExample from "@/app/(marketing)/_components/task-example";
 
 export default async function Home() {
   const t = await getTranslations("HomePage");
-  const { user } = await withAuth({ensureSignedIn: false});
+  const { user } = await withAuth({ ensureSignedIn: false });
 
   return (
     <div className="justify-items-center items-center gap-16 grid grid-rows-[20px_1fr_20px] p-8 sm:p-20 pb-20 min-h-screen font-[family-name:var(--font-geist-sans)]">
@@ -27,24 +27,30 @@ export default async function Home() {
           <li className="mb-2">{t("included.next-intl")}</li>
           <li className="mb-2">{t("included.workos")}</li>
           <li className="mb-2">{t("included.convex")}</li>
+          <li className="mb-2">{t("included.zustand")}</li>
+          <li className="mb-2">{t("included.autumn")}</li>
         </ol>
 
         <div className="flex sm:flex-row flex-col items-center gap-4">
-            {user ? (
+          {user ? (
             <>
-            <p>Welcome, {user.firstName} {user.lastName}</p>
-            <Button variant="outline">
-              <Link href="/dashboard">Dashboard</Link>
-            </Button>   
+              <p>Welcome, {user.firstName} {user.lastName}</p>
+              <Button variant="outline">
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
             </>
           ) : (
             <>
-            <Button variant="outline">
-              <Link href="/sign-in">{t("signIn")}</Link>
-            </Button>
-            <Button variant="default">
-              <Link href="/sign-up">{t("signUp")}</Link>
-            </Button>
+              <Link href="/sign-in">
+                <Button variant="outline" className="cursor-pointer">
+                  {t("signIn")}
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button variant="default" className="cursor-pointer">
+                  {t("signUp")}
+                </Button>
+              </Link>
             </>
           )}
         </div>

@@ -6,7 +6,7 @@ export default function SubscriptionPage() {
     return (
         <div className="flex flex-col justify-center p-6 min-h-full">
             <div className="mx-auto w-full max-w-7xl">
-                <PricingTable productDetails={productDetails} />
+                <PricingTable productDetails={productDetails} redirectTo={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`} />
             </div>
         </div>
     );

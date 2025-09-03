@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Route configurations - centralized and easier to maintain
 const ROUTE_CONFIG = {
   signIn: ['/sign-in', '/sign-up', '/verify-email', '/reset-password', '/new-password', '/select-organization'],
-  protected: ['/dashboard', '/onboarding', '/subscription'],
+  protected: ['/dashboard', '/onboarding', '/onboarding/initialize', '/subscription', '/chat'], // Add chat route
   skipAuth: ['/api/auth/callback', '/api/auth/oauth-url'], // Add webhook routes that shouldn't be processed
   public: ['/'], // Public routes that don't need auth
 };

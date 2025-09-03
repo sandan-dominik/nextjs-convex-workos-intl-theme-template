@@ -24,7 +24,9 @@
       "next-intl": "Next Intl integriert + Sprachauswahl",
       "next-themes": "Next Theme (Dark/light) integriert + Toggle",
       "workos": "WorkOS Auth integriert",
-      "convex": "Convex integriert"
+      "convex": "Convex integriert",
+      "zustand": "Zustand State Management integriert",
+      "autumn": "Autumn Abonnement-Management integriert"
     }
   },
   "SignInPage": {
@@ -86,7 +88,18 @@
       "placeholder": "Geben Sie den Namen Ihrer Organisation ein"
     },
     "createOrganization": "Erstelle Organisation",
-    "creating": "Wird erstellt..."
+    "creating": "Wird erstellt...",
+    "initializing": "Arbeitsbereich wird initialisiert",
+    "initializingDescription": "Richte deine neue Organisation ein...",
+    "steps": {
+      "verifyingAuth": "Authentifizierung wird überprüft",
+      "loadingOrg": "Organisationsdaten werden geladen",
+      "syncingStore": "Lokaler Speicher wird synchronisiert",
+      "preparingWorkspace": "Arbeitsbereich wird vorbereitet"
+    },
+    "workspaceReady": "Arbeitsbereich bereit! Weiterleitung zum Abonnement...",
+    "initializationFailed": "Initialisierung fehlgeschlagen",
+    "retry": "Erneut versuchen"
   },
   "DashboardPage": {
     "title": "Dashboard",
@@ -217,9 +230,9 @@
     },
     "features": {
       "seats": {
-        "free": "1 Benutzerplatz inklusive",
-        "pro": "3 Benutzerplätze inklusive",
-        "additionalSeat": "$10/Monat für jeden zusätzlichen Platz."
+        "free": "1 Benutzer inklusive",
+        "pro": "3 Benutzer inklusive",
+        "additionalSeat": "$10/Monat für jeden zusätzlichen Benutzer."
       },
       "credits": {
         "free": "10 Credits pro Monat",

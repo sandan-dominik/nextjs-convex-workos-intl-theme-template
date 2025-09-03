@@ -17,10 +17,15 @@ import { useTranslations } from "next-intl";
 
 export default function PricingTable({
   productDetails,
+  redirectTo,
+  showBackToDashboard = false,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   productDetails?: any[];
+  redirectTo?: string;
+  showBackToDashboard?: boolean;
 }) {
+  // Always call useTranslations hook (rules of hooks)
   const t = useTranslations("pricing.table");
   const { checkout } = useCustomer();
   const [isAnnual, setIsAnnual] = useState(false);
@@ -29,7 +34,7 @@ export default function PricingTable({
   if (isLoading) {
     return (
       <div className="flex justify-center items-center w-full h-full min-h-[300px]">
-        <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" />
+        <Loader2 className="w-4 h-4 text-zinc-400 animate-spin" />
         <span className="ml-2">{t("loading")}</span>
       </div>
     );
@@ -87,8 +92,8 @@ export default function PricingTable({
                   if (product.id) {
                     await checkout({
                       productId: product.id,
-                      dialog: CheckoutDialog,
-                      successUrl: "/dashboard",
+                      dialog: CheckoutDialog, 
+                      successUrl: redirectTo
                     });
                   } else if (product.display?.button_url) {
                     window.open(product.display?.button_url, "_blank");
@@ -97,6 +102,13 @@ export default function PricingTable({
               }}
             />
           ))}
+          {products.some(p => p.scenario === "active") && redirectTo && showBackToDashboard && (
+            <div className="col-span-full mt-6 text-center">
+              <Button variant="link" asChild>
+                <a href={redirectTo}>Dashboard →</a>
+              </Button>
+            </div>
+          )}
         </PricingTableContainer>
       )}
     </div>
@@ -454,7 +466,7 @@ export const PricingCardButton = React.forwardRef<
   return (
     <Button
       className={cn(
-        "group relative hover:brightness-90 px-4 py-3 border rounded-lg w-full overflow-hidden transition-all duration-300",
+        "group relative hover:brightness-90 px-4 py-3 border rounded-lg w-full overflow-hidden transition-all duration-300 cursor-pointer",
         className
       )}
       {...props}

@@ -243,23 +243,26 @@ export async function createOrganization(prevState: ActionResponse | null, formD
             throw new Error('NEXT_PUBLIC_APP_URL is not configured');
         }
 
-        if (!appUrl) {
-            throw new Error('NEXT_PUBLIC_APP_URL is not configured');
-        }
-
+        // 4. Switch to the organization (this will create NEXT_REDIRECT)
         try {
-            const authResponse = await switchToOrganization(organization.id);
-            console.log('Auth response:', authResponse);
+            await switchToOrganization(organization.id, {
+                returnTo: `${appUrl}/onboarding/initialize?orgId=${organization.id}&token=${Date.now()}`,
+            });
         } catch (error: unknown) {
+            // NEXT_REDIRECT is expected - this means the switch was successful
+            if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+                // This is successful - the redirect will happen automatically
+                throw error;
+            }
             console.error('Error switching to organization:', error);
             throw error;
         }
 
-        // If we reach here, the switch was successful
+        // We should never reach here due to NEXT_REDIRECT
         return {
             success: true,
             message: t("organizationCreatedSuccessfully"),
-            redirect: '/subscription'
+            redirect: `${appUrl}/onboarding/initialize?orgId=${organization.id}&token=${Date.now()}`
         };
     } catch (error: unknown) {
         console.log('Create organization error:', error);

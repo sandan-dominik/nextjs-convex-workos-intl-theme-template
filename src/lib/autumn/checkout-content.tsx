@@ -13,9 +13,9 @@ export const getCheckoutContent = (checkoutResult: CheckoutResult) => {
 
   if (is_one_off) {
     return {
-      title: "checkout.titles.purchase",
+      title: "titles.purchase",
       titleParams: { productName },
-      message: "checkout.messages.purchase",
+      message: "messages.purchase",
       messageParams: { productName },
     };
   }
@@ -23,17 +23,17 @@ export const getCheckoutContent = (checkoutResult: CheckoutResult) => {
   if (scenario == "active" && updateable) {
     if (updateable) {
       return {
-        title: "checkout.titles.updatePlan",
-        message: "checkout.messages.updatePlan",
+        title: "titles.updatePlan",
+        message: "messages.updatePlan",
       };
     }
   }
 
   if (has_trial) {
     return {
-      title: "checkout.titles.startTrial",
+      title: "titles.startTrial",
       titleParams: { productName },
-      message: "checkout.messages.startTrial",
+      message: "messages.startTrial",
       messageParams: { productName, nextCycleAtStr },
     };
   }
@@ -41,68 +41,68 @@ export const getCheckoutContent = (checkoutResult: CheckoutResult) => {
   switch (scenario) {
     case "scheduled":
       return {
-        title: "checkout.titles.productScheduled",
+        title: "titles.productScheduled",
         titleParams: { productName },
-        message: "checkout.messages.productScheduled",
+        message: "messages.productScheduled",
         messageParams: { productName, currentProductName: current_product.name, nextCycleAtStr },
       };
 
     case "active":
       return {
-        title: "checkout.titles.productActive",
-        message: "checkout.messages.productActive",
+        title: "titles.productActive",
+        message: "messages.productActive",
       };
 
     case "new":
       if (is_free) {
         return {
-          title: "checkout.titles.enableProduct",
+          title: "titles.enableProduct",
           titleParams: { productName },
-          message: "checkout.messages.enableProduct",
+          message: "messages.enableProduct",
           messageParams: { productName },
         };
       }
 
       return {
-        title: "checkout.titles.subscribeTo",
+        title: "titles.subscribeTo",
         titleParams: { productName },
-        message: "checkout.messages.subscribeTo",
+        message: "messages.subscribeTo",
         messageParams: { productName },
       };
     case "renew":
       return {
-        title: "checkout.titles.renew",
-        message: "checkout.messages.renew",
+        title: "titles.renew",
+        message: "messages.renew",
         messageParams: { productName },
       };
 
     case "upgrade":
       return {
-        title: "checkout.titles.upgradeTo",
+        title: "titles.upgradeTo",
         titleParams: { productName },
-        message: "checkout.messages.upgradeTo",
+        message: "messages.upgradeTo",
         messageParams: { productName },
       };
 
     case "downgrade":
       return {
-        title: "checkout.titles.downgradeTo",
+        title: "titles.downgradeTo",
         titleParams: { productName },
-        message: "checkout.messages.downgradeTo",
+        message: "messages.downgradeTo",
         messageParams: { productName, currentProductName: current_product.name, nextCycleAtStr },
       };
 
     case "cancel":
       return {
-        title: "checkout.titles.cancel",
-        message: "checkout.messages.cancel",
+        title: "titles.cancel",
+        message: "messages.cancel",
         messageParams: { currentProductName: current_product.name, nextCycleAtStr },
       };
 
     default:
       return {
-        title: "checkout.titles.changeSubscription",
-        message: "checkout.messages.changeSubscription",
+        title: "titles.changeSubscription",
+        message: "messages.changeSubscription",
       };
   }
 };

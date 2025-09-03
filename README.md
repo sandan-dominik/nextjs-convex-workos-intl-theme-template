@@ -1,6 +1,6 @@
 # Next.js Starter with Authentication & Real-time Database
 
-A modern, full-stack starter template built with Next.js 15, featuring authentication with WorkOS AuthKit, real-time database with Convex, and a beautiful UI with Tailwind CSS and shadcn/ui.
+A modern, full-stack starter template built with Next.js 15, featuring authentication with WorkOS AuthKit, real-time database with Convex, state management with Zustand, subscription management with Autumn, and a beautiful UI with Tailwind CSS and shadcn/ui.
 
 ## 🚀 Features
 
@@ -9,6 +9,8 @@ A modern, full-stack starter template built with Next.js 15, featuring authentic
 - **🧩 shadcn/ui** - Beautiful, accessible UI components
 - **🔐 WorkOS AuthKit** - Enterprise-grade authentication
 - **⚡ Convex** - Real-time database and backend
+- **📊 Zustand** - Lightweight state management [New]
+- **💳 Autumn** - Subscription and usage management [New]
 - **🌍 Internationalization** - Multi-language support with next-intl
 - **🌙 Dark Mode** - Built-in theme switching
 - **📱 Responsive Design** - Mobile-first approach
@@ -20,6 +22,8 @@ A modern, full-stack starter template built with Next.js 15, featuring authentic
 - **Styling**: Tailwind CSS, shadcn/ui
 - **Authentication**: WorkOS AuthKit
 - **Database**: Convex (real-time)
+- **State Management**: Zustand [New]
+- **Subscription Management**: Autumn [New]
 - **Internationalization**: next-intl
 - **Theme**: next-themes
 - **Package Manager**: pnpm
@@ -98,14 +102,20 @@ This will:
 Create a `.env.local` file in the root directory or copy `.env.example` and rename it:
 
 ```env
-# WorkOS Configuration
-WORKOS_API_KEY=sk_test_your_workos_api_key_here
-WORKOS_CLIENT_ID=client_01your_workos_client_id_here
-WORKOS_COOKIE_PASSWORD=your_secure_password_here_must_be_at_least_32_characters_long
-NEXT_PUBLIC_WORKOS_REDIRECT_URI=http://localhost:3000/auth/callback
+# WorkOS AuthKit Configuration
+WORKOS_API_KEY=<WORKOS_API_KEY>
+WORKOS_CLIENT_ID=<WORKOS_CLIENT_ID>
+WORKOS_COOKIE_PASSWORD="<your password>"
+NEXT_PUBLIC_WORKOS_REDIRECT_URI=http://localhost:3000/api/auth/callback
 
 # Convex Configuration
 NEXT_PUBLIC_CONVEX_URL=your_convex_url_here
+
+AUTUMN_PROD_SECRET_KEY=your_autumn_key_here
+AUTUMN_SECRET_KEY=your_autumn_secret_key_here
+
+MIDDLEWARE_DEBUG=false
+
 ```
 
 **Important Notes:**
@@ -139,35 +149,162 @@ Open [http://localhost:3000](http://localhost:3000) to view your application.
 
 ```
 nextjs-convex-workos-intl-theme-template/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # Authentication routes
-│   │   │   ├── sign-in/
-│   │   │   ├── sign-up/
-│   │   │   └── verify/
-│   │   ├── (protected)/       # Protected routes
-│   │   │   └── dashboard/
-│   │   ├── actions/           # Server actions
-│   │   │   └── auth.ts
-│   │   └── api/               # API routes
-│   │       └── auth/
-│   ├── components/            # React components
-│   │   ├── ui/               # shadcn/ui components
-│   │   ├── common/           # Common components
-│   │   └── task-example.tsx  # Example component
-│   ├── convex/               # Convex functions
-│   │   └── tasks.ts
-│   ├── i18n/                 # Internationalization
-│   ├── lib/                  # Utility functions
-│   ├── provider/             # Context providers
-│   └── schemas/              # Zod schemas
-├── convex/                   # Convex configuration
-│   ├── auth.config.ts        # Auth configuration
-│   └── tasks.ts              # Example functions
-├── messages/                 # Translation files
-├── public/                   # Static assets
-├── middleware.ts             # Next.js middleware
-└── .env.example              # Environment variables template
+├── src/                                             # Source code directory
+│   ├── app/                                         # Next.js App Router
+│   │   ├── (auth)/                                  # Authentication route group
+│   │   │   ├── _components/                         # Shared auth components
+│   │   │   │   ├── new-password-form.tsx
+│   │   │   │   ├── oauth-button.tsx
+│   │   │   │   ├── organization-selector.tsx
+│   │   │   │   ├── otp-form.tsx
+│   │   │   │   ├── password-reset-form.tsx
+│   │   │   │   ├── sign-in-form.tsx
+│   │   │   │   └── sign-up-form.tsx
+│   │   │   ├── new-password/                        # New password page
+│   │   │   ├── reset-password/                      # Password reset page
+│   │   │   ├── select-organization/                 # Organization selection
+│   │   │   ├── sign-in/                             # Sign in page
+│   │   │   ├── sign-up/                             # Sign up page
+│   │   │   └── verify/                              # Email verification page
+│   │   ├── (marketing)/                             # Marketing route group
+│   │   │   ├── _components/                         # Marketing components
+│   │   │   │   └── task-example.tsx
+│   │   │   └── page.tsx                             # Landing page
+│   │   ├── (protected)/                             # Protected route group
+│   │   │   ├── _components/                         # Shared protected components
+│   │   │   │   └── autumn-wrapper.tsx
+│   │   │   ├── (dashboard)/                         # Dashboard route group
+│   │   │   │   ├── _components/                     # Dashboard components
+│   │   │   │   │   ├── app-sidebar-client.tsx
+│   │   │   │   │   ├── nav-main.tsx
+│   │   │   │   │   ├── nav-settings.tsx
+│   │   │   │   │   ├── nav-tools.tsx
+│   │   │   │   │   ├── nav-user.tsx
+│   │   │   │   │   ├── organization-switcher.tsx
+│   │   │   │   │   └── sign-out-button.tsx
+│   │   │   │   ├── (platform)/                      # Platform features
+│   │   │   │   │   ├── chat/                        # Chat functionality
+│   │   │   │   │   └── dashboard/                   # Dashboard overview
+│   │   │   │   ├── settings/                        # User settings
+│   │   │   │   │   ├── subscription/                # Subscription management
+│   │   │   │   │   └── usage/                       # Usage tracking
+│   │   │   │   └── layout.tsx                       # Dashboard layout
+│   │   │   ├── (onboarding)/                        # Onboarding flow
+│   │   │   │   ├── _components/                     # Onboarding components
+│   │   │   │   │   └── onboarding-form.tsx
+│   │   │   │   └── onboarding/                      # Onboarding page
+│   │   │   ├── (pricing)/                           # Pricing route group
+│   │   │   │   ├── layout.tsx                       # Pricing layout
+│   │   │   │   └── subscription/                    # Subscription page
+│   │   │   └── layout.tsx                           # Protected routes layout
+│   │   ├── actions/                                 # Server actions
+│   │   │   └── auth.ts                              # Authentication actions
+│   │   ├── api/                                     # API routes
+│   │   │   ├── auth/                                # Authentication API
+│   │   │   │   ├── callback/                        # OAuth callback
+│   │   │   │   ├── complete-oauth/                  # OAuth completion
+│   │   │   │   └── oauth-url/                       # OAuth URL generation
+│   │   │   ├── organizations/                       # Organization management
+│   │   │   │   └── [id]/                            # Organization by ID
+│   │   │   └── user/                                # User management
+│   │   │       └── organizations/                   # User organizations
+│   │   ├── favicon.ico                              # Favicon
+│   │   ├── globals.css                              # Global styles
+│   │   └── layout.tsx                               # Root layout
+│   ├── components/                                  # React components
+│   │   ├── ui/                                      # shadcn/ui components
+│   │   │   ├── accordion.tsx
+│   │   │   ├── alert.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── breadcrumb.tsx
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── input-otp.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── textarea.tsx
+│   │   │   └── tooltip.tsx
+│   │   ├── autumn/                                  # Autumn subscription components
+│   │   │   ├── checkout-dialog.tsx
+│   │   │   ├── pricing-table.tsx
+│   │   │   └── subscription-badge.tsx
+│   │   ├── common/                                  # Common components
+│   │   │   ├── lang-switcher.tsx
+│   │   │   └── theme-toggle.tsx
+│   │   ├── client-only.tsx                          # Client-only wrapper
+│   │   ├── customer-sync.tsx                        # Customer data sync
+│   │   ├── debug-panel.tsx                          # Debug panel component
+│   │   └── store-sync.tsx                           # Store synchronization
+│   ├── convex/                                      # Convex backend functions
+│   │   ├── _generated/                              # Auto-generated types
+│   │   ├── auth.config.ts                           # Authentication configuration
+│   │   ├── autumn.ts                                # Autumn integration
+│   │   ├── convex.config.ts                         # Convex configuration
+│   │   └── tasks.ts                                 # Example task functions
+│   ├── hooks/                                       # Custom React hooks
+│   │   ├── use-app-store.ts                         # App store hook
+│   │   └── use-mobile.ts                            # Mobile detection hook
+│   ├── i18n/                                        # Internationalization
+│   │   └── request.ts                               # i18n request handler
+│   ├── lib/                                         # Utility libraries
+│   │   ├── autumn/                                  # Autumn content helpers
+│   │   │   ├── checkout-content.tsx
+│   │   │   └── pricing-table-content.tsx
+│   │   ├── api-client.ts                            # API client utilities
+│   │   └── utils.ts                                 # General utilities
+│   ├── provider/                                    # Context providers
+│   │   ├── convex-client-provider.tsx               # Convex client provider
+│   │   └── theme-provider.tsx                       # Theme provider
+│   ├── schemas/                                     # Data validation schemas
+│   │   └── zod/                                     # Zod schemas
+│   │       └── auth.ts                              # Authentication schemas
+│   └── stores/                                      # Zustand state stores
+│       └── app-store.ts                             # Main application state
+├── convex/                                          # Convex configuration
+│   ├── _generated/                                  # Auto-generated files
+│   │   ├── api.d.ts                                 # API types
+│   │   ├── api.js                                   # API functions
+│   │   ├── dataModel.d.ts                           # Data model types
+│   │   ├── server.d.ts                              # Server types
+│   │   └── server.js                                # Server functions
+│   ├── auth.config.ts                               # Authentication configuration
+│   ├── autumn.ts                                    # Autumn integration
+│   ├── convex.config.ts                             # Convex configuration
+│   └── tasks.ts                                     # Example functions
+├── messages/                                        # Internationalization files
+│   ├── de.json                                      # German translations
+│   └── en.json                                      # English translations
+├── public/                                          # Static assets
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── autumn.config.ts                                 # Autumn subscription configuration
+├── components.json                                  # shadcn/ui configuration
+├── convex.json                                      # Convex configuration
+├── eslint.config.mjs                                # ESLint configuration
+├── next-env.d.ts                                    # Next.js type definitions
+├── next.config.ts                                   # Next.js configuration
+├── package.json                                     # Dependencies and scripts
+├── pnpm-lock.yaml                                   # Lock file
+├── pnpm-workspace.yaml                              # pnpm workspace configuration
+├── postcss.config.mjs                               # PostCSS configuration
+├── README.md                                        # Project documentation
+├── sampleData.jsonl                                 # Sample data for testing
+├── tsconfig.json                                    # TypeScript configuration
+└── middleware.ts                                    # Next.js middleware
 ```
 
 ## 🔐 Authentication Flow
@@ -177,37 +314,29 @@ This starter includes a complete authentication system with WorkOS AuthKit:
 1. **Sign Up**: Users can create accounts with email/password
 2. **Email Verification**: Required email verification flow
 3. **Sign In**: Secure login with WorkOS AuthKit
-4. **Protected Routes**: Automatic route protection
-5. **Session Management**: Persistent sessions with secure cookies
+4. **Onboarding Org Creation**: Creating WorkOS Organization as a Admin Membership
+5. **Select Plan**: Autumn Plan Free/Pro with different credits/seats
+6. **Protected Routes**: Automatic route protections
+7. **Session Management**: Persistent sessions with secure cookies
 
 ### Authentication Routes
 
 - `/sign-up` - User registration
 - `/sign-in` - User login
 - `/verify` - Email verification
+- `/onboarding` - Onboarding
+- `/subscription` - Autumn Subscription
 - `/dashboard` - Protected dashboard
 
 ### Using Authentication in Components
 
 ```typescript
-import { useAuth } from '@workos-inc/authkit-nextjs/components';
-
-export default function MyComponent() {
-  const { user, loading } = useAuth();
-  
-  if (loading) return <div>Loading...</div>;
-  
-  return user ? (
-    <div>Welcome, {user.firstName}!</div>
-  ) : (
-    <div>Please sign in</div>
-  );
-}
+Take a look at Zustand use[Functions] in app-store
 ```
 
 ## 🗄️ Database (Convex)
 
-The project uses Convex for real-time data with WorkOS authentication integration.
+The project uses Convex for real-time data with WorkOS authentication integration and Autumn subscription management.
 
 ### Example: Task Management
 
@@ -251,6 +380,137 @@ export const getMyTasks = query({
   },
 });
 ```
+
+## 📊 State Management (Zustand)
+
+The project uses Zustand for lightweight, efficient state management with persistence and developer tools.
+
+### App Store Features
+
+- **User Management**: Store and manage user authentication state
+- **Organization Management**: Handle multi-tenant organization switching
+- **Subscription Data**: Store customer and product information
+- **Persistence**: Automatic state persistence with selective serialization
+- **Developer Tools**: Built-in Redux DevTools integration
+
+### Store Structure
+
+```typescript
+interface AppState {
+  // User data
+  user: User | null;
+  organizationId: string | null;
+  organizations: Organization[];
+  
+  // Subscription data
+  customer: Customer | null;
+  activeProduct: Product | null;
+  
+  // Loading states
+  isLoading: boolean;
+  customerLoading: boolean;
+  
+  // Actions
+  setUser: (user: User | null) => void;
+  setOrganizationId: (id: string | null) => void;
+  switchOrganization: (orgId: string) => void;
+  // ... more actions
+}
+```
+
+## 💳 Subscription Management (Autumn)
+
+The project integrates Autumn for comprehensive subscription and usage management with Convex.
+
+### Autumn Features
+
+- **Product Management**: Define free and paid subscription plans
+- **Feature Gating**: Control access based on subscription tiers
+- **Usage Tracking**: Monitor feature usage and credit consumption
+- **Seat Management**: Handle team member access and overage pricing
+- **Credit System**: Flexible credit-based pricing for usage-based features
+
+### Configuration
+
+The `autumn.config.ts` file defines your subscription structure:
+
+```typescript
+// Define features
+export const seats = feature({
+  id: "seats",
+  name: "Seats",
+  type: "continuous_use",
+});
+
+export const messages = feature({
+  id: "messages",
+  name: "Messages",
+  type: "single_use",
+});
+
+// Define products
+export const free = product({
+  id: "free",
+  name: "Free",
+  items: [
+    featureItem({
+      feature_id: seats.id,
+      included_usage: 1,
+    }),
+    featureItem({
+      feature_id: messages.id,
+      included_usage: 10,
+      interval: "month",
+    }),
+  ],
+});
+
+export const pro = product({
+  id: "pro",
+  name: "Pro",
+  items: [
+    priceItem({
+      price: 29,
+      interval: "month",
+    }),
+    pricedFeatureItem({
+      feature_id: seats.id,
+      included_usage: 3,
+      price: 10,
+      interval: "month",
+    }),
+  ],
+});
+```
+
+### Using Autumn in Components
+
+```typescript
+import { useCustomer, usePricingTable } from "autumn-js/react";
+
+export default function PricingTable() {
+  const { customer } = useCustomer();
+  const { pricingTable } = usePricingTable();
+  
+  // Check subscription status
+  const isPro = customer?.products?.some(p => p.id === 'pro' && p.status === 'active');
+  
+  // Get available features
+  const availableSeats = customer?.products?.find(p => p.id === 'pro')?.features?.seats?.included_usage || 1;
+  
+  return (
+    <div>
+      <h2>Your Plan: {isPro ? 'Pro' : 'Free'}</h2>
+      <p>Available seats: {availableSeats}</p>
+    </div>
+  );
+}
+```
+
+### Integration with Convex
+
+Autumn is seamlessly integrated with Convex through the `@useautumn/convex` package:
+https://docs.useautumn.com/setup/convex
 
 ## 🎨 UI Components
 
@@ -349,6 +609,8 @@ npx convex deploy # Deploy Convex functions
 - `components.json` - shadcn/ui configuration
 - `convex.json` - Convex configuration
 - `convex/auth.config.ts` - Convex authentication configuration
+- `convex/convex.config.ts` - Convex + Autumn configuration
+- `autumn.config.ts` - Autumn subscription configuration
 - `tsconfig.json` - TypeScript configuration
 
 ## 🐛 Troubleshooting
@@ -370,6 +632,16 @@ npx convex deploy # Deploy Convex functions
    - Check that production variables are set in your hosting platform
    - Verify variable names match exactly
 
+4. **Autumn Integration Issues**
+   - Verify `AUTUMN_SECRET_KEY` is set in environment variables
+   - Check that `autumn.config.ts` is properly configured
+   - Ensure Convex is running with `npx convex dev`
+
+5. **Zustand Store Issues**
+   - Check browser console for persistence errors
+   - Verify store initialization in component tree
+   - Check that store actions are properly bound
+
 ### Debugging Authentication
 
 If users can log in but `useConvexAuth()` returns `isAuthenticated: false`:
@@ -378,6 +650,15 @@ If users can log in but `useConvexAuth()` returns `isAuthenticated: false`:
 2. Verify `WORKOS_CLIENT_ID` in Convex environment
 3. Ensure JWT template includes the `aud` claim
 4. Run `npx convex dev` to sync configuration
+
+### Debugging Autumn
+
+If subscription data is not loading:
+
+1. Check `AUTUMN_SECRET_KEY` environment variable
+2. Verify `autumn.config.ts` product definitions
+3. Check Convex logs for Autumn-related errors
+4. Ensure customer data is properly synced
 
 ## 🤝 Contributing
 
@@ -414,3 +695,5 @@ If you encounter any issues:
 - [Convex Documentation](https://docs.convex.dev/)
 - [WorkOS AuthKit Documentation](https://workos.com/docs/authkit)
 - [Next.js Documentation](https://nextjs.org/docs)
+- [Zustand Documentation](https://zustand-demo.pmnd.rs/)
+- [Autumn Documentation](https://docs.autumn.dev/)
